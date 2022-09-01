@@ -8,14 +8,6 @@ public class Entity : MonoBehaviour
     public NavMeshAgent navigation;
     public List<ICommand> commands = new List<ICommand>();
 
-    private void Start()
-    {
-        var position = new Vector3(Random.value * 10, transform.position.y, Random.value * 10);
-
-        navigation.Raycast(new Vector3(Random.value * 10, transform.position.y, Random.value * 10), out var hit);
-
-        commands.Add(new MoveCommand(this, hit.position));
-    }
     private void FixedUpdate()
     {
         WaitIfNoCommand();
