@@ -6,11 +6,11 @@ public class MoveCommand : ICommand
     public Vector3 position;
 
     public bool BeingExecuted { get; set; }
-    public Entity Entity { get; set; }
+    public Entity Self { get; set; }
 
     public MoveCommand(Entity entity, Vector3 position)
     {
-        this.Entity = entity;
+        this.Self = entity;
         this.position = position;
 
         if (entity.commands.Count > 0 && entity.commands[0].GetType() == typeof(WaitCommand)) entity.commands.RemoveAt(0);
@@ -19,13 +19,13 @@ public class MoveCommand : ICommand
 
     public void BeginExecute()
     {
-        Entity.GetComponent<NavMeshAgent>().SetDestination(position);
+        Self.GetComponent<NavMeshAgent>().SetDestination(position);
         BeingExecuted = true;
     }
 
     public void OnExecute()
     {
-        if (new Vector2(Entity.transform.position.x, Entity.transform.position.z) == new Vector2(position.x, position.z)) 
+        if (new Vector2(Self.transform.position.x, Self.transform.position.z) == new Vector2(position.x, position.z)) 
         {
             OnComplete();
             return;
@@ -35,6 +35,6 @@ public class MoveCommand : ICommand
     public void OnComplete()
     {
         //remove this from entity command list
-        Entity.NextCommand();
+        Self.NextCommand();
     }
 }

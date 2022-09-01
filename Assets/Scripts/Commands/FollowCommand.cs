@@ -1,0 +1,46 @@
+using UnityEngine;
+using UnityEngine.AI;
+
+public class FollowCommand : ICommand
+{
+    public Entity follow;
+
+    public bool BeingExecuted { get; set; }
+    public Entity Self { get; set; }
+
+    NavMeshAgent agent;
+    float followDistance = 1.5f;
+
+    public FollowCommand(Entity self, Entity target)
+    {
+        agent = self.GetComponent<NavMeshAgent>();
+
+        this.Self = self;
+        this.follow = target;
+
+        if (self.commands.Count > 0 && self.commands[0].GetType() == typeof(WaitCommand)) self.commands.RemoveAt(0);
+        if (self.commands.Count == 0) BeginExecute();
+    }
+
+    public void BeginExecute()
+    {
+        agent.SetDestination(follow.transform.position);
+        BeingExecuted = true;
+    }
+
+    public void OnExecute()
+    {
+        if (Vector3.Distance(follow.transform.position, Self.transform.position) <= followDistance)
+        {
+            if (agent.destination != Self.transform.position) agent.SetDestination(Self.transform.position);
+            return;
+        }
+        agent.SetDestination(follow.transform.position);
+    }
+
+    public void OnComplete()
+    {
+        //remove this from entity command list
+        Self.NextCommand();
+    }
+}

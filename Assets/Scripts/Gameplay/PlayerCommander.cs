@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class PlayerCommander : MonoBehaviour
 {
@@ -14,17 +13,31 @@ public class PlayerCommander : MonoBehaviour
         CustomInput.Instance.OnLeftMouseDown += StartUnitSelection;
         CustomInput.Instance.OnLeftMouseUp += EndUnitSelection;
 
-        CustomInput.Instance.OnRightMouseDown += StartMoveCommand;
+        CustomInput.Instance.OnRightMouseDown += MoveAndAttackCommand;
     }
 
-    public void StartMoveCommand()
+    public void MoveAndAttackCommand()
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit, 100, groundLayer, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(ray, out hit, 100, selectionLayers, QueryTriggerInteraction.Ignore))
         {
+            var entity = hit.transform.GetComponent<Entity>();
 
+            foreach (Entity e in PlayerController.Instance.selectedUnits)
+            {
+                if (!CustomInput.Instance.shiftDown) e.commands.Clear();
+                if (entity.team == Team.player) //ally
+                {
+                    e.commands.Add(new FollowCommand(e, entity));
+                    return;
+                }
+                //TODO: add attack command if enemy
+            }
+        }
+        else if (Physics.Raycast(ray, out hit, 100, groundLayer, QueryTriggerInteraction.Ignore))
+        {
             foreach (Entity e in PlayerController.Instance.selectedUnits)
             {
                 if (!CustomInput.Instance.shiftDown) e.commands.Clear();
@@ -39,9 +52,6 @@ public class PlayerCommander : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 100, groundLayer, QueryTriggerInteraction.Ignore)) 
             selectionBegin = hit.point;
-
-        //if (Physics.Raycast(ray, out hit, 100, selectionLayers, QueryTriggerInteraction.Ignore))
-        //    PlayerController.Instance.selectedUnits.Add(hit.transform.GetComponent<Entity>());
     }
     public void EndUnitSelection()
     {

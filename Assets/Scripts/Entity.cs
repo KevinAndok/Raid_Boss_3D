@@ -2,11 +2,15 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
 
+public enum Team { none, player, boss };
+
 public class Entity : MonoBehaviour
 {
     //public PlayerInput input; //for player
     public NavMeshAgent navigation;
     public List<ICommand> commands = new List<ICommand>();
+
+    public Team team;
 
     private void FixedUpdate()
     {
