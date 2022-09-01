@@ -28,12 +28,15 @@ public class PlayerCommander : MonoBehaviour
             foreach (Entity e in PlayerController.Instance.selectedUnits)
             {
                 if (!CustomInput.Instance.shiftDown) e.commands.Clear();
-                if (entity.team == Team.player) //ally
+
+                if (entity.team == Team.player)     //ally
                 {
                     e.commands.Add(new FollowCommand(e, entity));
-                    return;
                 }
-                //TODO: add attack command if enemy
+                else if (entity.team == Team.boss)  //enemy
+                {
+                    e.commands.Add(new AttackCommand(e, entity));
+                }
             }
         }
         else if (Physics.Raycast(ray, out hit, 100, groundLayer, QueryTriggerInteraction.Ignore))
@@ -83,12 +86,12 @@ public class PlayerCommander : MonoBehaviour
                 }
             }
 
-            if (!CustomInput.Instance.shiftDown) 
-                PlayerController.Instance.selectedUnits.Clear();
+            if (!CustomInput.Instance.shiftDown)
+                PlayerController.Instance.UnselectAllUnits();
 
             foreach (var item in entities)
-                if (!PlayerController.Instance.selectedUnits.Contains(item))
-                    PlayerController.Instance.selectedUnits.Add(item);
+                if (!PlayerController.Instance.selectedUnits.Contains(item) && item.team == Team.player)
+                    PlayerController.Instance.SelectUnit(item);
         }
     }
 }

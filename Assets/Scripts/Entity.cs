@@ -11,6 +11,14 @@ public class Entity : MonoBehaviour
     public List<ICommand> commands = new List<ICommand>();
 
     public Team team;
+    public GameObject selectionCircle;
+
+    public Stats stats;
+
+    private void Awake()
+    {
+        stats.Init();
+    }
 
     private void FixedUpdate()
     {

@@ -13,4 +13,16 @@ public class PlayerController : MonoBehaviour
         if (Instance) Destroy(Instance);
         Instance = this;
     }
+
+    public void UnselectAllUnits()
+    {
+        foreach (Entity e in selectedUnits) e.selectionCircle.SetActive(false);
+        selectedUnits.Clear();
+    }
+
+    public void SelectUnit(Entity unit)
+    {
+        unit.selectionCircle.SetActive(true);
+        selectedUnits.Add(unit);
+    }
 }

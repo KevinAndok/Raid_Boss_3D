@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class FollowCommand : ICommand
 {
-    public Entity follow;
+    public Entity target;
 
     public bool BeingExecuted { get; set; }
     public Entity Self { get; set; }
@@ -16,7 +16,7 @@ public class FollowCommand : ICommand
         agent = self.GetComponent<NavMeshAgent>();
 
         this.Self = self;
-        this.follow = target;
+        this.target = target;
 
         if (self.commands.Count > 0 && self.commands[0].GetType() == typeof(WaitCommand)) self.commands.RemoveAt(0);
         if (self.commands.Count == 0) BeginExecute();
@@ -24,18 +24,18 @@ public class FollowCommand : ICommand
 
     public void BeginExecute()
     {
-        agent.SetDestination(follow.transform.position);
+        agent.SetDestination(target.transform.position);
         BeingExecuted = true;
     }
 
     public void OnExecute()
     {
-        if (Vector3.Distance(follow.transform.position, Self.transform.position) <= followDistance)
+        if (Vector3.Distance(target.transform.position, Self.transform.position) <= followDistance)
         {
             if (agent.destination != Self.transform.position) agent.SetDestination(Self.transform.position);
             return;
         }
-        agent.SetDestination(follow.transform.position);
+        agent.SetDestination(target.transform.position);
     }
 
     public void OnComplete()
