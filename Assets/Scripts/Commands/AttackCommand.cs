@@ -9,8 +9,6 @@ public class AttackCommand : ICommand
     public bool BeingExecuted { get; set; }
     public Entity Self { get; set; }
 
-    float lastAttack = 0;
-
     public AttackCommand(Entity self, Entity target)
     {
         agent = self.GetComponent<NavMeshAgent>();
@@ -21,7 +19,7 @@ public class AttackCommand : ICommand
         if (self.commands.Count > 0 && self.commands[0].GetType() == typeof(WaitCommand)) self.commands.RemoveAt(0);
         if (self.commands.Count == 0) BeginExecute();
     }
-
+    
     public void BeginExecute()
     {
         agent.SetDestination(target.transform.position);
@@ -38,10 +36,10 @@ public class AttackCommand : ICommand
 
         if (agent.destination != Self.transform.position) agent.SetDestination(Self.transform.position);
 
-        if (Time.time > lastAttack + (1 / Self.stats.AttackSpeed))
+        if (Time.time > Self.stats.LastAttack + (1 / Self.stats.AttackSpeed))
         {
             target.stats.Damage(Self.stats.AttackDamage);
-            lastAttack = Time.time;
+            Self.stats.Attack();
             Debug.Log(target.stats.Health);
         }
     }

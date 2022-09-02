@@ -5,9 +5,16 @@ public class PlayerCommander : MonoBehaviour
 {
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask selectionLayers;
+    [SerializeField] private Selection selection;
 
-    Vector3 selectionBegin = Vector3.zero;
+    Vector3 mouseClickBegin;
+    Vector3 mousePointCurrent;
+    bool pointingAtGround;
 
+    Entity pointingAt = null;
+    bool pointingAtEntity;
+
+    private void Awake() => selection.layers = selectionLayers;
     private void Start()
     {
         CustomInput.Instance.OnLeftMouseDown += StartUnitSelection;
@@ -15,76 +22,73 @@ public class PlayerCommander : MonoBehaviour
 
         CustomInput.Instance.OnRightMouseDown += MoveAndAttackCommand;
     }
+    private void Update()
+    {
+        GetMousePoint();
+    }
+    private void LateUpdate()
+    {
+        selection.gameObject.SetActive(CustomInput.Instance.leftMouseDown);
+    }
+
+    private void GetMousePoint()
+    {
+        RaycastHit hitOne, hitTwo;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        pointingAtGround = Physics.Raycast(ray, out hitOne, 100, groundLayer, QueryTriggerInteraction.Ignore);
+        mousePointCurrent = hitOne.point;
+
+        pointingAtEntity = Physics.Raycast(ray, out hitTwo, 100, selectionLayers, QueryTriggerInteraction.Ignore);
+        if (hitTwo.transform) hitTwo.transform.TryGetComponent(out pointingAt);
+
+        selection.SetMousePositions(mouseClickBegin, mousePointCurrent);
+    }
 
     public void MoveAndAttackCommand()
     {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit, 100, selectionLayers, QueryTriggerInteraction.Ignore))
+        if (pointingAtEntity)
         {
-            var entity = hit.transform.GetComponent<Entity>();
-
             foreach (Entity e in PlayerController.Instance.selectedUnits)
             {
                 if (!CustomInput.Instance.shiftDown) e.commands.Clear();
 
-                if (entity.team == Team.player)     //ally
+                if (pointingAt.team == Team.player)     //ally
                 {
-                    e.commands.Add(new FollowCommand(e, entity));
+                    e.commands.Add(new FollowCommand(e, pointingAt));
                 }
-                else if (entity.team == Team.boss)  //enemy
+                else if (pointingAt.team == Team.boss)  //enemy
                 {
-                    e.commands.Add(new AttackCommand(e, entity));
+                    e.commands.Add(new AttackCommand(e, pointingAt));
                 }
             }
         }
-        else if (Physics.Raycast(ray, out hit, 100, groundLayer, QueryTriggerInteraction.Ignore))
+        else if (pointingAtGround)
         {
             foreach (Entity e in PlayerController.Instance.selectedUnits)
             {
                 if (!CustomInput.Instance.shiftDown) e.commands.Clear();
-                e.commands.Add(new MoveCommand(e, hit.point));
+                e.commands.Add(new MoveCommand(e, mousePointCurrent));
             }
         }
     }
     public void StartUnitSelection()
     {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit, 100, groundLayer, QueryTriggerInteraction.Ignore)) 
-            selectionBegin = hit.point;
+        if (pointingAtGround)
+            mouseClickBegin = mousePointCurrent;
+        else return;
     }
     public void EndUnitSelection()
     {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit, 100, groundLayer, QueryTriggerInteraction.Ignore))
+        if (pointingAtGround)
         {
-            Vector3 selectionEnd = hit.point;
-            Vector3 halfExtends = (selectionBegin - selectionEnd);
-            halfExtends = new Vector3(Mathf.Abs(halfExtends.x), 10, Mathf.Abs(halfExtends.z));
-            Vector3 middle = (selectionBegin - selectionEnd) / 2 + selectionEnd;
+            List<Entity> entities = selection.Select();
 
-            RaycastHit[] hits = Physics.BoxCastAll(middle, halfExtends, Vector3.up, Quaternion.identity, 1, selectionLayers, QueryTriggerInteraction.Ignore);
-            List<Entity> entities = new List<Entity>();
-
-            if (hits.Length == 0)
-            {
-                hits = new RaycastHit[1];
-                if (!Physics.Raycast(ray, out hits[0], 100, selectionLayers, QueryTriggerInteraction.Ignore))
-                    hits = new RaycastHit[0];
-            }
-
-            foreach (RaycastHit target in hits)
-            {
-                if (target.transform.TryGetComponent<Entity>(out var entity))
-                {
-                    entities.Add(entity);
-                }
-            }
+            if (entities.Count == 0 && 
+                pointingAtEntity &&
+                pointingAt.transform != null &&
+                pointingAt.transform.TryGetComponent<Entity>(out var entity))
+                entities.Add(entity);
 
             if (!CustomInput.Instance.shiftDown)
                 PlayerController.Instance.UnselectAllUnits();
@@ -93,5 +97,6 @@ public class PlayerCommander : MonoBehaviour
                 if (!PlayerController.Instance.selectedUnits.Contains(item) && item.team == Team.player)
                     PlayerController.Instance.SelectUnit(item);
         }
+        else return;
     }
 }

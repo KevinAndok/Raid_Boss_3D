@@ -18,6 +18,7 @@ public class Stats
     public float AttackSpeed { get; private set; }
     public float AttackRange { get; private set; }
     public float AttackDamage { get; private set; }
+    public float LastAttack { get; private set; }
 
     public void Init()
     {
@@ -29,12 +30,14 @@ public class Stats
         AttackSpeed = attackSpeed;
         AttackRange = attackRange;
         AttackDamage = attackDamage;
+        LastAttack = 0;
     }
 
     public void ApplySlow()
     {
 
     }
+    public void Attack() => LastAttack = Time.time;
     public void Damage(float amount) => Health = Mathf.Clamp(Health - amount, 0, MaxHealth);
     public void Heal(float amount) => Health = Mathf.Clamp(health + amount, 0, MaxHealth);
     public void RegenerateHealth() => Heal(HealthRegeneration * Time.fixedDeltaTime);
