@@ -33,9 +33,11 @@ public class FollowCommand : ICommand
         if (Vector3.Distance(target.transform.position, Self.transform.position) <= followDistance)
         {
             if (agent.destination != Self.transform.position) agent.SetDestination(Self.transform.position);
+            Self.MoveAnimation(false);
             return;
         }
         agent.SetDestination(target.transform.position);
+        Self.MoveAnimation(true);
     }
 
     public void OnComplete()

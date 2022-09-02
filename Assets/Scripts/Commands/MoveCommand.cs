@@ -19,13 +19,21 @@ public class MoveCommand : ICommand
 
     public void BeginExecute()
     {
+        Self.MoveAnimation(true);
         Self.GetComponent<NavMeshAgent>().SetDestination(position);
         BeingExecuted = true;
     }
 
     public void OnExecute()
     {
-        if (new Vector2(Self.transform.position.x, Self.transform.position.z) == new Vector2(position.x, position.z)) 
+        if (new Vector2(Self.transform.position.x, Self.transform.position.z) == new Vector2(position.x, position.z))
+        {
+            OnComplete();
+            return;
+        }
+        
+        if (Self.commands.Count > 2 && Self.commands[1].GetType() == typeof(MoveCommand) &&
+            Vector2.Distance(new Vector2(Self.transform.position.x, Self.transform.position.z), new Vector2(position.x, position.z)) < .5f)
         {
             OnComplete();
             return;
@@ -34,6 +42,7 @@ public class MoveCommand : ICommand
 
     public void OnComplete()
     {
+        Self.MoveAnimation(false);
         //remove this from entity command list
         Self.NextCommand();
     }

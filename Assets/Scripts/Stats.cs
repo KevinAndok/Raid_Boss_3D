@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 [System.Serializable]
 public class Stats
@@ -20,8 +21,14 @@ public class Stats
     public float AttackDamage { get; private set; }
     public float LastAttack { get; private set; }
 
-    public void Init()
+    Entity self;
+
+    public event Action OnDeath;
+
+    public void Init(Entity self)
     {
+        this.self = self;
+
         Health = health;
         MaxHealth = health;
         HealthRegeneration = healthRegeneration;
@@ -37,8 +44,17 @@ public class Stats
     {
 
     }
-    public void Attack() => LastAttack = Time.time;
-    public void Damage(float amount) => Health = Mathf.Clamp(Health - amount, 0, MaxHealth);
+    public void Attack(Entity target)
+    {
+        self.AttackAnimation();
+        LastAttack = Time.time;
+        target.stats.Damage(AttackDamage);
+    }
+    public void Damage(float amount)
+    {
+        Health = Mathf.Clamp(Health - amount, 0, MaxHealth);
+        if (Health == 0) OnDeath?.Invoke();
+    }
     public void Heal(float amount) => Health = Mathf.Clamp(health + amount, 0, MaxHealth);
     public void RegenerateHealth() => Heal(HealthRegeneration * Time.fixedDeltaTime);
 }

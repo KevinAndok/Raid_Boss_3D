@@ -13,6 +13,7 @@ public class WaitCommand : ICommand
     public void BeginExecute()
     {
         BeingExecuted = true;
+        Self.MoveAnimation(false);
     }
 
     public void OnComplete()

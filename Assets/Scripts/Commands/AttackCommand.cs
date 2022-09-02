@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class AttackCommand : ICommand
 {
@@ -31,15 +32,20 @@ public class AttackCommand : ICommand
         if (Vector3.Distance(target.transform.position, Self.transform.position) > Self.stats.AttackRange)
         {
             agent.SetDestination(target.transform.position);
+            Self.MoveAnimation(true);
             return;
         }
+
+        Self.transform.LookAt(Self.navigation.destination);
+        Self.transform.rotation = Quaternion.Euler(0, Self.transform.rotation.eulerAngles.y, 0);
+
+        Self.MoveAnimation(false);
 
         if (agent.destination != Self.transform.position) agent.SetDestination(Self.transform.position);
 
         if (Time.time > Self.stats.LastAttack + (1 / Self.stats.AttackSpeed))
         {
-            target.stats.Damage(Self.stats.AttackDamage);
-            Self.stats.Attack();
+            Self.stats.Attack(target);
             Debug.Log(target.stats.Health);
         }
     }
