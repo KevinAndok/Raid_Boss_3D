@@ -72,6 +72,7 @@ public class Entity : MonoBehaviour
     private void DeathAnimation(bool state) => animator.SetBool("IsDead", state);
     public void MoveAnimation(bool state) => animator.SetBool("IsWalking", state);
     public void AttackAnimation() => animator.SetTrigger("Attack");
+    public void IdleTwo() => animator.SetTrigger("IdleTwo");
     private void OnDeath()
     {
         DeathAnimation(true);

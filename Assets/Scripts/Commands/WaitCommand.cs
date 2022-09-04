@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class WaitCommand : ICommand
 {
     public bool BeingExecuted { get; set; }
@@ -16,12 +18,12 @@ public class WaitCommand : ICommand
         Self.MoveAnimation(false);
     }
 
-    public void OnComplete()
+    public void OnExecute()
     {
-        
+        if (Random.value < .001f) Self.IdleTwo();
     }
 
-    public void OnExecute()
+    public void OnComplete()
     {
         
     }
