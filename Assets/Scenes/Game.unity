@@ -4061,6 +4061,7 @@ GameObject:
   - component: {fileID: 1990614318}
   - component: {fileID: 1990614319}
   - component: {fileID: 1990614320}
+  - component: {fileID: 1990614321}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Untagged
@@ -4144,6 +4145,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   selection: {fileID: 341270693}
+  PlayerController: {fileID: 1990614320}
 --- !u!114 &1990614320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4156,7 +4158,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 938bc4a008382a4448d1a5576db9374a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UnitGroups: {fileID: 1990614321}
   selectedUnits: []
+--- !u!114 &1990614321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990614315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26c6b20434e06644aa9054e59b3a40ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2014941107 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3883116564036177607, guid: 2ecf8c013996d394282eb4624e5826ea, type: 3}

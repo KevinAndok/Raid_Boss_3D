@@ -14,6 +14,8 @@ public class PlayerCommander : MonoBehaviour
     Entity pointingAt = null;
     bool pointingAtEntity;
 
+    public PlayerController PlayerController;
+
     private void Awake() => selection.layers = selectionLayers;
     private void Start()
     {
@@ -49,7 +51,7 @@ public class PlayerCommander : MonoBehaviour
     {
         if (pointingAtEntity)
         {
-            foreach (Entity e in PlayerController.Instance.selectedUnits)
+            foreach (Entity e in PlayerController.selectedUnits)
             {
                 if (!CustomInput.Instance.shiftDown) e.commands.Clear();
 
@@ -65,7 +67,7 @@ public class PlayerCommander : MonoBehaviour
         }
         else if (pointingAtGround)
         {
-            foreach (Entity e in PlayerController.Instance.selectedUnits)
+            foreach (Entity e in PlayerController.selectedUnits)
             {
                 if (!CustomInput.Instance.shiftDown) e.commands.Clear();
                 e.commands.Add(new MoveCommand(e, mousePointCurrent));
@@ -91,11 +93,11 @@ public class PlayerCommander : MonoBehaviour
                 entities.Add(entity);
 
             if (!CustomInput.Instance.shiftDown)
-                PlayerController.Instance.UnselectAllUnits();
+                PlayerController.UnselectAllUnits();
 
             foreach (var item in entities)
-                if (!PlayerController.Instance.selectedUnits.Contains(item) && item.team == Team.player)
-                    PlayerController.Instance.SelectUnit(item);
+                if (!PlayerController.selectedUnits.Contains(item) && item.team == Team.player)
+                    PlayerController.SelectUnit(item);
         }
         else return;
     }
