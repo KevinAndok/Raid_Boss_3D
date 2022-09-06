@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class UnitGroups : MonoBehaviour
 {
+    public UnitGroupUI[] UIUnitGroups;
     public List<List<Entity>> SelectionGroups;
 
     private void Awake()
@@ -15,11 +16,13 @@ public class UnitGroups : MonoBehaviour
     {
         SelectionGroups[group].Clear();
         SelectionGroups[group].AddRange(units);
+        UIUnitGroups[group].SetGroup(null, SelectionGroups[group].Count);
     }
     public void AddUnitGroup(int group, List<Entity> units)
     {
         foreach (var unit in units) 
             if (!SelectionGroups[group].Contains(unit)) 
                 SelectionGroups[group].Add(unit);
+        UIUnitGroups[group].SetGroup(null, SelectionGroups[group].Count);
     }
 }

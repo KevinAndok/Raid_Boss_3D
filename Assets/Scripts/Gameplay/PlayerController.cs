@@ -35,22 +35,17 @@ public class PlayerController : MonoBehaviour
 
     public void SelectionGroup(int number)
     {
-        Debug.Log("Helo");
-
         if (CustomInput.Instance.shiftDown)
         {
-            Debug.Log("shift Helo");
             UnitGroups.AddUnitGroup(number, selectedUnits);
             return;
         }
         if (CustomInput.Instance.ctrlDown || CustomInput.Instance.altDown)
         {
-            Debug.Log("ctrl Helo");
             UnitGroups.SetUnitGroup(number, selectedUnits);
             return;
         }
         //select units
-        Debug.Log("select Helo");
         UnselectAllUnits();
         foreach (var unit in UnitGroups.SelectionGroups[number]) SelectUnit(unit);
     }
