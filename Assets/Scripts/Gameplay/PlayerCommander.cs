@@ -82,23 +82,44 @@ public class PlayerCommander : MonoBehaviour
     }
     public void EndUnitSelection()
     {
-        if (pointingAtGround)
+        List<Entity> entities = selection.Select();
+
+        if (entities.Count == 0 &&
+            pointingAtEntity &&
+            pointingAt.transform != null &&
+            pointingAt.transform.TryGetComponent<Entity>(out var entity))
+            entities.Add(entity);
+
+        if (!CustomInput.Instance.shiftDown)
         {
-            List<Entity> entities = selection.Select();
-
-            if (entities.Count == 0 && 
-                pointingAtEntity &&
-                pointingAt.transform != null &&
-                pointingAt.transform.TryGetComponent<Entity>(out var entity))
-                entities.Add(entity);
-
-            if (!CustomInput.Instance.shiftDown)
-                PlayerController.UnselectAllUnits();
-
-            foreach (var item in entities)
-                if (!PlayerController.selectedUnits.Contains(item) && item.team == Team.player)
-                    PlayerController.SelectUnit(item);
+            PlayerController.UnselectAllUnits();
         }
-        else return;
+
+        ToggleSelection(entities);
+    }
+
+    private void ToggleSelection(List<Entity> entities)
+    {
+        foreach (var item in entities)
+        {
+            if (item.team != Team.player) continue;
+
+            if (CustomInput.Instance.shiftDown)
+            {
+                switch (PlayerController.selectedUnits.Contains(item))
+                {
+                    case true:
+                        PlayerController.UnselectUnit(item);
+                        break;
+                    case false:
+                        PlayerController.SelectUnit(item);
+                        break;
+                }
+                continue;
+            }
+
+            if (!PlayerController.selectedUnits.Contains(item))
+                PlayerController.SelectUnit(item);
+        }
     }
 }

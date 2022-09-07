@@ -6,6 +6,8 @@ public enum Team { none, player, boss };
 
 public class Entity : MonoBehaviour
 {
+    public ISpell[] spells;
+
     //public PlayerInput input; //for player
     public NavMeshAgent navigation;
     public Animator animator;

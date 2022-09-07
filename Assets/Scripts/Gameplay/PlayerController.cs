@@ -32,6 +32,11 @@ public class PlayerController : MonoBehaviour
         unit.selectionCircle.SetActive(true);
         selectedUnits.Add(unit);
     }
+    public void UnselectUnit(Entity unit)
+    {
+        unit.selectionCircle.SetActive(false);
+        selectedUnits.Remove(unit);
+    }
 
     public void SelectionGroup(int number)
     {

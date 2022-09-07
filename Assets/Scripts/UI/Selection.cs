@@ -16,14 +16,6 @@ public class Selection : MonoBehaviour
     [SerializeField] private Rigidbody rb;
     [SerializeField] private BoxCollider colliderBox;
 
-    Vector3 screenSize;
-
-    private void OnEnable()
-    {
-        screenSize = new Vector3(Screen.width, Screen.height);
-        Debug.Log(screenSize);
-    }
-
     private void Update()
     {
         transform.position = middle;
