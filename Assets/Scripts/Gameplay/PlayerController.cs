@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
     private void ColorCirclesBasedonSelection(PlayerUnit unit)
     {
-        if (!CustomInput.Instance.altDown)
+        if (!CustomInput.Instance.altDown || true)
         {
             if (unit == selectedUnits[0]) unit.selectionCircleGFX.Color = selectedColor;
             else unit.selectionCircleGFX.Color = Color.white;

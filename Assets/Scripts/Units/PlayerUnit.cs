@@ -6,22 +6,35 @@ public class PlayerUnit : Entity
     public Sprite unitIcon;
 
     public GameObject selectionCircle;
-    public Disc selectionCircleGFX;
+    [HideInInspector] public Disc selectionCircleGFX;
+    [HideInInspector] public Transform selectionCircleTrans;
 
     private void Awake()
     {
-        //selectionCircle = Instantiate(selectionCircle);
+        var parent = new GameObject(name);
+        parent.transform.parent = transform.parent;
+        transform.parent = parent.transform;
+        selectionCircle = Instantiate(selectionCircle);
+        selectionCircle.transform.parent = transform.parent;
+        selectionCircleGFX = selectionCircle.GetComponent<Disc>();
+        selectionCircleTrans = selectionCircle.transform;
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
 
+        MoveSelectionCircle();
         RotateSelectionCircle();
+    }
+
+    private void MoveSelectionCircle()
+    {
+        selectionCircleTrans.position = transform.position;
     }
 
     void RotateSelectionCircle() 
     {
-        if (selectionCircle.activeInHierarchy) selectionCircleGFX.DashOffset += Time.fixedDeltaTime * .5f;
+        if (selectionCircle.activeInHierarchy) selectionCircleGFX.DashOffset += Time.fixedDeltaTime * 1;
     }
 }
