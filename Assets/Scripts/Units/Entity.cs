@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
+using Shapes;
 
 public enum Team { none, player, boss };
 
@@ -16,6 +17,7 @@ public class Entity : MonoBehaviour
 
     public Team team;
     public GameObject selectionCircle;
+    public Disc selectionCircleGFX;
 
     public Stats stats;
 

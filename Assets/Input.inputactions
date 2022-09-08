@@ -34,7 +34,7 @@
                 },
                 {
                     "name": "Tab",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "9e96a15d-94ef-46b2-8839-5f4c2783c867",
                     "expectedControlType": "Button",
                     "processors": "",

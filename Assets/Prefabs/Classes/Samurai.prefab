@@ -232,6 +232,7 @@ MonoBehaviour:
   model: {fileID: 3887582644678793658}
   team: 1
   selectionCircle: {fileID: 84651017}
+  selectionCircleGFX: {fileID: 84651021}
   stats:
     health: 100
     movementSpeed: 5

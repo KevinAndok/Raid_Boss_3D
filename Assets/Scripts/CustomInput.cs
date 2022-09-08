@@ -22,6 +22,9 @@ public class CustomInput : MonoBehaviour
     public event Action OnAltDown;
     public event Action OnAltUp;
 
+    public event Action OnTabDown;
+    public event Action OnTabUp;
+
     public event Action OnOneDown;
     public event Action OnTwoDown;
     public event Action OnThreeDown;
@@ -40,6 +43,7 @@ public class CustomInput : MonoBehaviour
     public bool shiftDown { get; private set; }
     public bool ctrlDown { get; private set; }
     public bool altDown { get; private set; }
+    public bool tabDown { get; private set; }
     #endregion
 
     private void Awake()
@@ -115,6 +119,20 @@ public class CustomInput : MonoBehaviour
                 break;
             case false:
                 OnAltUp?.Invoke();
+                break;
+        }
+    }
+    public void OnTab()
+    {
+        tabDown = !tabDown;
+
+        switch (tabDown)
+        {
+            case true:
+                OnTabDown?.Invoke();
+                break;
+            case false:
+                OnTabUp?.Invoke();
                 break;
         }
     }

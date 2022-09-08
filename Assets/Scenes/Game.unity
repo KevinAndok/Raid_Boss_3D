@@ -5024,6 +5024,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitGroups: {fileID: 1990614321}
   selectedUnits: []
+  selectedColor: {r: 0.34007448, g: 0.8396226, b: 0.30495724, a: 1}
 --- !u!114 &1990614321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5544,6 +5545,7 @@ MonoBehaviour:
   model: {fileID: 0}
   team: 2
   selectionCircle: {fileID: 1440737335}
+  selectionCircleGFX: {fileID: 0}
   stats:
     health: 100
     movementSpeed: 5
