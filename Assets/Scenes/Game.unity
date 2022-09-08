@@ -1369,13 +1369,13 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
-    m_Resolution: -1
+    m_Type: 1
+    m_Resolution: 3
     m_CustomResolution: -1
     m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
+    m_Bias: 0
+    m_NormalBias: 0
+    m_NearPlane: 0.1
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -5024,7 +5024,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitGroups: {fileID: 1990614321}
   selectedUnits: []
-  selectedColor: {r: 0.34007448, g: 0.8396226, b: 0.30495724, a: 1}
+  selectedColor: {r: 0.24129502, g: 0.4716981, b: 0.14017443, a: 1}
 --- !u!114 &1990614321
 MonoBehaviour:
   m_ObjectHideFlags: 0

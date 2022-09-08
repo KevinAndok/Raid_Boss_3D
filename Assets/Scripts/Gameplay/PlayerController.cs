@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public UnitGroups UnitGroups;
-    public List<Entity> selectedUnits = new List<Entity>();
+    public List<PlayerUnit> selectedUnits = new List<PlayerUnit>();
 
     public Color selectedColor;
 
@@ -27,23 +28,40 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        DisplayCurrentlyUsedUnit();
+    }
+
+    private void DisplayCurrentlyUsedUnit()
+    {
         foreach (var unit in selectedUnits)
+        {
+            ColorCirclesBasedonSelection(unit);
+        }
+    }
+
+    private void ColorCirclesBasedonSelection(PlayerUnit unit)
+    {
+        if (!CustomInput.Instance.altDown)
+        {
             if (unit == selectedUnits[0]) unit.selectionCircleGFX.Color = selectedColor;
             else unit.selectionCircleGFX.Color = Color.white;
+            return;
+        }
+        unit.selectionCircleGFX.Color = selectedColor;
     }
 
     public void UnselectAllUnits()
     {
-        foreach (Entity e in selectedUnits) e.selectionCircle.SetActive(false);
+        foreach (PlayerUnit e in selectedUnits) e.selectionCircle.SetActive(false);
         selectedUnits.Clear();
     }
 
-    public void SelectUnit(Entity unit)
+    public void SelectUnit(PlayerUnit unit)
     {
         unit.selectionCircle.SetActive(true);
         selectedUnits.Add(unit);
     }
-    public void UnselectUnit(Entity unit)
+    public void UnselectUnit(PlayerUnit unit)
     {
         unit.selectionCircle.SetActive(false);
         selectedUnits.Remove(unit);

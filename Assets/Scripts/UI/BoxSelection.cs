@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Shapes;
 
-public class Selection : MonoBehaviour
+public class BoxSelection : MonoBehaviour
 {
     Vector3 mouseClickBegin;
     Vector3 mouseClickCurrent;
@@ -23,13 +23,13 @@ public class Selection : MonoBehaviour
         DrawSelectionBox();
     }
 
-    public List<Entity> Select()
+    public List<PlayerUnit> Select()
     {
-        List<Entity> entities = new List<Entity>();
+        List<PlayerUnit> entities = new List<PlayerUnit>();
 
         foreach (var point in rb.SweepTestAll(Vector3.up))
         {
-            if (point.transform.gameObject.TryGetComponent<Entity>(out var entity))
+            if (point.transform.gameObject.TryGetComponent<PlayerUnit>(out var entity))
                 entities.Add(entity);
         }
 

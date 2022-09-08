@@ -5,7 +5,7 @@ public class PlayerCommander : MonoBehaviour
 {
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask selectionLayers;
-    [SerializeField] private Selection selection;
+    [SerializeField] private BoxSelection selection;
 
     Vector3 mouseClickBegin;
     Vector3 mousePointCurrent;
@@ -82,12 +82,12 @@ public class PlayerCommander : MonoBehaviour
     }
     public void EndUnitSelection()
     {
-        List<Entity> entities = selection.Select();
+        List<PlayerUnit> entities = selection.Select();
 
         if (entities.Count == 0 &&
             pointingAtEntity &&
             pointingAt.transform != null &&
-            pointingAt.transform.TryGetComponent<Entity>(out var entity))
+            pointingAt.transform.TryGetComponent<PlayerUnit>(out var entity))
             entities.Add(entity);
 
         if (!CustomInput.Instance.shiftDown)
@@ -98,7 +98,7 @@ public class PlayerCommander : MonoBehaviour
         ToggleSelection(entities);
     }
 
-    private void ToggleSelection(List<Entity> entities)
+    private void ToggleSelection(List<PlayerUnit> entities)
     {
         foreach (var item in entities)
         {

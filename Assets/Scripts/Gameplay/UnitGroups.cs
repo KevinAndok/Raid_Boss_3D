@@ -4,21 +4,21 @@ using UnityEngine;
 public class UnitGroups : MonoBehaviour
 {
     public UnitGroupUI[] UIUnitGroups;
-    public List<List<Entity>> SelectionGroups;
+    public List<List<PlayerUnit>> SelectionGroups;
 
     private void Awake()
     {
-        SelectionGroups = new List<List<Entity>>();
+        SelectionGroups = new List<List<PlayerUnit>>();
         for (int i = 0; i < 10; i++) SelectionGroups.Add(new());
     }
 
-    public void SetUnitGroup(int group, List<Entity> units)
+    public void SetUnitGroup(int group, List<PlayerUnit> units)
     {
         SelectionGroups[group].Clear();
         SelectionGroups[group].AddRange(units);
         UIUnitGroups[group].SetGroup(null, SelectionGroups[group].Count);
     }
-    public void AddUnitGroup(int group, List<Entity> units)
+    public void AddUnitGroup(int group, List<PlayerUnit> units)
     {
         foreach (var unit in units) 
             if (!SelectionGroups[group].Contains(unit)) 

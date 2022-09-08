@@ -7,6 +7,8 @@ public enum Team { none, player, boss };
 
 public class Entity : MonoBehaviour
 {
+    public Team team;
+
     public ISpell[] spells;
 
     //public PlayerInput input; //for player
@@ -14,10 +16,6 @@ public class Entity : MonoBehaviour
     public Animator animator;
     public Transform model;
     public List<ICommand> commands = new List<ICommand>();
-
-    public Team team;
-    public GameObject selectionCircle;
-    public Disc selectionCircleGFX;
 
     public Stats stats;
 
@@ -29,7 +27,7 @@ public class Entity : MonoBehaviour
     {
         stats.Init(this);
     }
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         WaitIfNoCommand();
 
