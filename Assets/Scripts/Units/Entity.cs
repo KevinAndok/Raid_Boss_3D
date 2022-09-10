@@ -1,15 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
-using Shapes;
 
 public enum Team { none, player, boss };
 
 public class Entity : MonoBehaviour
 {
     public Team team;
-
-    public ISpell[] spells;
 
     //public PlayerInput input; //for player
     public NavMeshAgent navigation;
@@ -22,6 +19,7 @@ public class Entity : MonoBehaviour
     private void Awake()
     {
         stats.OnDeath += OnDeath;
+        //spells.Add(new TestingSpell());
     }
     private void OnEnable()
     {
@@ -73,10 +71,17 @@ public class Entity : MonoBehaviour
     }
     private void DeathAnimation(bool state) => animator.SetBool("IsDead", state);
     public void MoveAnimation(bool state) => animator.SetBool("IsWalking", state);
+    public void CastAnimation(bool state) => animator.SetBool("Casting", state);
     public void AttackAnimation() => animator.SetTrigger("Attack");
     public void IdleTwo() => animator.SetTrigger("IdleTwo");
     private void OnDeath()
     {
         DeathAnimation(true);
+    }
+    public void StopCurrentCommand() => commands[0].OnCancel();
+    public void StopAllCommands()
+    {
+        StopCurrentCommand();
+        commands.Clear();
     }
 }

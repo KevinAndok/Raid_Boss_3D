@@ -4076,6 +4076,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wizard
       objectReference: {fileID: 0}
+    - target: {fileID: 4299694315419403201, guid: 688aefeaab768f7479f0e70c0b1e564c, type: 3}
+      propertyPath: spells.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4299694315419403201, guid: 688aefeaab768f7479f0e70c0b1e564c, type: 3}
+      propertyPath: managedReferences[-2]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4299694315419403201, guid: 688aefeaab768f7479f0e70c0b1e564c, type: 3}
+      propertyPath: spells.Array.data[0].command
+      value: 
+      objectReference: {fileID: 11500000, guid: c376354a03b147d4baced324d9053e1c, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 688aefeaab768f7479f0e70c0b1e564c, type: 3}
 --- !u!1 &1643112120
@@ -5540,12 +5552,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60f62599613feef4b87c6b5f993fca1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  team: 2
   navigation: {fileID: 3883116562682186494}
   animator: {fileID: 0}
   model: {fileID: 0}
-  team: 2
-  selectionCircle: {fileID: 1440737335}
-  selectionCircleGFX: {fileID: 0}
   stats:
     health: 100
     movementSpeed: 5

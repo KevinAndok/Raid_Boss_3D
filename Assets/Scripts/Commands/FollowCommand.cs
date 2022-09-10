@@ -45,4 +45,9 @@ public class FollowCommand : ICommand
         //remove this from entity command list
         Self.NextCommand();
     }
+
+    public void OnCancel()
+    {
+        Debug.LogWarning(new System.NotImplementedException());
+    }
 }

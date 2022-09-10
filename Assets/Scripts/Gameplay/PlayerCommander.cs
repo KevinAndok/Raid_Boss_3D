@@ -9,10 +9,11 @@ public class PlayerCommander : MonoBehaviour
 
     Vector3 mouseClickBegin;
     Vector3 mousePointCurrent;
-    bool pointingAtGround;
 
-    Entity pointingAt = null;
-    bool pointingAtEntity;
+    public static Vector3 pointingAtGround = Vector3.zero;
+    public static Entity pointingAtEntity = null;
+    public static bool isPointingAtGround;
+    public static bool isPointingAtEntity;
 
     public PlayerController PlayerController;
 
@@ -38,11 +39,11 @@ public class PlayerCommander : MonoBehaviour
         RaycastHit hitOne, hitTwo;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        pointingAtGround = Physics.Raycast(ray, out hitOne, 100, groundLayer, QueryTriggerInteraction.Ignore);
+        isPointingAtGround = Physics.Raycast(ray, out hitOne, 100, groundLayer, QueryTriggerInteraction.Ignore);
         mousePointCurrent = hitOne.point;
 
-        pointingAtEntity = Physics.Raycast(ray, out hitTwo, 100, selectionLayers, QueryTriggerInteraction.Ignore);
-        if (hitTwo.transform) hitTwo.transform.TryGetComponent(out pointingAt);
+        isPointingAtEntity = Physics.Raycast(ray, out hitTwo, 100, selectionLayers, QueryTriggerInteraction.Ignore);
+        if (hitTwo.transform) hitTwo.transform.TryGetComponent(out pointingAtEntity);
 
         selection.SetMousePositions(mouseClickBegin, mousePointCurrent);
     }
@@ -53,30 +54,30 @@ public class PlayerCommander : MonoBehaviour
         {
             foreach (Entity e in PlayerController.selectedUnits)
             {
-                if (!CustomInput.Instance.shiftDown) e.commands.Clear();
+                if (!CustomInput.Instance.shiftDown) e.StopAllCommands();
 
-                if (pointingAt.team == Team.player)     //ally
+                if (pointingAtEntity.team == Team.player)     //ally
                 {
-                    e.commands.Add(new FollowCommand(e, pointingAt));
+                    e.commands.Add(new FollowCommand(e, pointingAtEntity));
                 }
-                else if (pointingAt.team == Team.boss)  //enemy
+                else if (pointingAtEntity.team == Team.boss)  //enemy
                 {
-                    e.commands.Add(new AttackCommand(e, pointingAt));
+                    e.commands.Add(new AttackCommand(e, pointingAtEntity));
                 }
             }
         }
-        else if (pointingAtGround)
+        else if (isPointingAtGround)
         {
             foreach (Entity e in PlayerController.selectedUnits)
             {
-                if (!CustomInput.Instance.shiftDown) e.commands.Clear();
+                if (!CustomInput.Instance.shiftDown) e.StopAllCommands();
                 e.commands.Add(new MoveCommand(e, mousePointCurrent));
             }
         }
     }
     public void StartUnitSelection()
     {
-        if (pointingAtGround)
+        if (isPointingAtGround)
             mouseClickBegin = mousePointCurrent;
         else return;
     }
@@ -86,8 +87,8 @@ public class PlayerCommander : MonoBehaviour
 
         if (entities.Count == 0 &&
             pointingAtEntity &&
-            pointingAt.transform != null &&
-            pointingAt.transform.TryGetComponent<PlayerUnit>(out var entity))
+            pointingAtEntity.transform != null &&
+            pointingAtEntity.transform.TryGetComponent<PlayerUnit>(out var entity))
             entities.Add(entity);
 
         if (!CustomInput.Instance.shiftDown)
@@ -120,6 +121,17 @@ public class PlayerCommander : MonoBehaviour
 
             if (!PlayerController.selectedUnits.Contains(item))
                 PlayerController.SelectUnit(item);
+        }
+    }
+
+    //Work in Progress
+    public void CastSpell(int spellIndex)
+    {
+        var cmd = (object)PlayerController.selectedUnits[0].spells[spellIndex].command.GetClass();
+        if (cmd is CastSpell spell)
+        {
+            PlayerController.selectedUnits[0].StopAllCommands();
+            PlayerController.selectedUnits[0].commands.Add(spell.GetCommand(PlayerController.selectedUnits[0]));
         }
     }
 }

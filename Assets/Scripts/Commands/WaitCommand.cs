@@ -27,4 +27,9 @@ public class WaitCommand : ICommand
     {
         
     }
+
+    public void OnCancel()
+    {
+        Debug.LogWarning(new System.NotImplementedException());
+    }
 }

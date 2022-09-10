@@ -1,4 +1,7 @@
 using Shapes;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerUnit : Entity
@@ -8,6 +11,8 @@ public class PlayerUnit : Entity
     public GameObject selectionCircle;
     [HideInInspector] public Disc selectionCircleGFX;
     [HideInInspector] public Transform selectionCircleTrans;
+
+    public List<Spell> spells;
 
     private void Awake()
     {
