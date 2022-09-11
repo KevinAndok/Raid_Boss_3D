@@ -35,6 +35,19 @@ public class CustomInput : MonoBehaviour
     public event Action OnEightDown;
     public event Action OnNineDown;
     public event Action OnZeroDown;
+
+    public event Action OnQDown;
+    public event Action OnWDown;
+    public event Action OnEDown;
+    public event Action OnRDown;
+    public event Action OnADown;
+    public event Action OnSDown;
+    public event Action OnDDown;
+    public event Action OnFDown;
+    public event Action OnZDown;
+    public event Action OnXDown;
+    public event Action OnCDown;
+    public event Action OnVDown;
     #endregion
 
     #region Properties
@@ -146,4 +159,17 @@ public class CustomInput : MonoBehaviour
     public void OnEight() => OnEightDown?.Invoke();
     public void OnNine() => OnNineDown?.Invoke();
     public void OnZero() => OnZeroDown?.Invoke();
+
+    public void OnQ() => OnQDown?.Invoke();
+    public void OnW() => OnWDown?.Invoke();
+    public void OnE() => OnEDown?.Invoke();
+    public void OnR() => OnRDown?.Invoke();
+    public void OnA() => OnADown?.Invoke();
+    public void OnS() => OnSDown?.Invoke();
+    public void OnD() => OnDDown?.Invoke();
+    public void OnF() => OnFDown?.Invoke();
+    public void OnZ() => OnZDown?.Invoke();
+    public void OnX() => OnXDown?.Invoke();
+    public void OnC() => OnCDown?.Invoke();
+    public void OnV() => OnVDown?.Invoke();
 }

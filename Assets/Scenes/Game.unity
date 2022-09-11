@@ -4080,14 +4080,6 @@ PrefabInstance:
       propertyPath: spells.Array.size
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4299694315419403201, guid: 688aefeaab768f7479f0e70c0b1e564c, type: 3}
-      propertyPath: managedReferences[-2]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4299694315419403201, guid: 688aefeaab768f7479f0e70c0b1e564c, type: 3}
-      propertyPath: spells.Array.data[0].command
-      value: 
-      objectReference: {fileID: 11500000, guid: c376354a03b147d4baced324d9053e1c, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 688aefeaab768f7479f0e70c0b1e564c, type: 3}
 --- !u!1 &1643112120

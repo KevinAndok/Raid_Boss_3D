@@ -1,6 +1,7 @@
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
-public class TestingSpell : CastSpell
+public class TestingSpell : ICommand //ID 0
 {
     Vector3 Ground;
     float time = 2;
@@ -9,34 +10,43 @@ public class TestingSpell : CastSpell
     {
         Self = self;
         Ground = ground;
+
+        if (self.commands.Count == 0) BeginExecute();
     }
 
-    public override void BeginExecute()
+    public bool BeingExecuted { get; set; }
+    public Entity Self { get; set; }
+
+    public void BeginExecute()
     {
         BeingExecuted = true;
         Self.CastAnimation(true);
+        Debug.Log("Begun");
     }
 
-    public override ICommand GetCommand(Entity self)
-    {
-        if (!PlayerCommander.isPointingAtGround) return null;
-        return new TestingSpell(self, PlayerCommander.pointingAtGround);
-    }
-
-    public override void OnCancel()
+    public void OnCancel()
     {
         Self.CastAnimation(false);
+        Self.NextCommand();
+
+        Debug.Log("Cancelled");
     }
 
-    public override void OnComplete()
+    public void OnComplete()
     {
         Self.CastAnimation(false);
-        Self.transform.position = Ground;
+        Self.NextCommand();
+        Debug.Log("Completed");
     }
 
-    public override void OnExecute()
+    public void OnExecute()
     {
         time -= Time.fixedDeltaTime;
-        if (time <= 0) OnComplete();
+        Debug.Log(time);
+        if (time <= 0)
+        {
+            Self.transform.position = Ground;
+            OnComplete();
+        }
     }
 }

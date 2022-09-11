@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerCommander : MonoBehaviour
@@ -24,6 +26,21 @@ public class PlayerCommander : MonoBehaviour
         CustomInput.Instance.OnLeftMouseUp += EndUnitSelection;
 
         CustomInput.Instance.OnRightMouseDown += MoveAndAttackCommand;
+
+        CustomInput.Instance.OnQDown += () => CastSpell(0);
+        CustomInput.Instance.OnWDown += () => CastSpell(1);
+        CustomInput.Instance.OnEDown += () => CastSpell(2);
+        CustomInput.Instance.OnRDown += () => CastSpell(3);
+
+        CustomInput.Instance.OnADown += () => CastSpell(4);
+        CustomInput.Instance.OnSDown += () => CastSpell(5);
+        CustomInput.Instance.OnDDown += () => CastSpell(6);
+        CustomInput.Instance.OnFDown += () => CastSpell(7);
+
+        CustomInput.Instance.OnZDown += () => CastSpell(8);
+        CustomInput.Instance.OnXDown += () => CastSpell(9);
+        CustomInput.Instance.OnCDown += () => CastSpell(10);
+        CustomInput.Instance.OnVDown += () => CastSpell(11);
     }
     private void Update()
     {
@@ -50,7 +67,7 @@ public class PlayerCommander : MonoBehaviour
 
     public void MoveAndAttackCommand()
     {
-        if (pointingAtEntity)
+        if (isPointingAtEntity)
         {
             foreach (Entity e in PlayerController.selectedUnits)
             {
@@ -124,14 +141,11 @@ public class PlayerCommander : MonoBehaviour
         }
     }
 
-    //Work in Progress
     public void CastSpell(int spellIndex)
     {
-        var cmd = (object)PlayerController.selectedUnits[0].spells[spellIndex].command.GetClass();
-        if (cmd is CastSpell spell)
-        {
+        if (!CustomInput.Instance.shiftDown || PlayerController.selectedUnits[0].commands[0].GetType() == typeof(WaitCommand))
             PlayerController.selectedUnits[0].StopAllCommands();
-            PlayerController.selectedUnits[0].commands.Add(spell.GetCommand(PlayerController.selectedUnits[0]));
-        }
+
+        PlayerController.selectedUnits[0].commands.Add(PlayerController.selectedUnits[0].spells[spellIndex].GetCommand(PlayerController.selectedUnits[0]));
     }
 }
