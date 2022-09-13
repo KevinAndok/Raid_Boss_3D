@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MoveCommand : ICommand
+public sealed class MoveCommand : ICommand
 {
     public Vector3 position;
 
@@ -19,13 +19,24 @@ public class MoveCommand : ICommand
 
     public void BeginExecute()
     {
+        if (!Self.CanMove)
+        {
+            OnComplete();
+            return;
+        }
         Self.MoveAnimation(true);
         Self.GetComponent<NavMeshAgent>().SetDestination(position);
         BeingExecuted = true;
     }
 
-    public void OnExecute()
+    public void OnFixedFrame()
     {
+        if (!Self.CanMove)
+        {
+            OnComplete();
+            return;
+        }
+
         if (new Vector2(Self.transform.position.x, Self.transform.position.z) == new Vector2(position.x, position.z))
         {
             OnComplete();
@@ -49,6 +60,11 @@ public class MoveCommand : ICommand
 
     public void OnCancel()
     {
-        Debug.LogWarning(new System.NotImplementedException());
+        return;
+    }
+
+    public void OnInterrupt()
+    {
+        return;
     }
 }

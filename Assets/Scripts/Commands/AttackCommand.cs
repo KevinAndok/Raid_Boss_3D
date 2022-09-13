@@ -1,8 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;
 
-public class AttackCommand : ICommand
+public sealed class AttackCommand : ICommand
 {
     public Entity target;
     public NavMeshAgent agent;
@@ -23,12 +22,25 @@ public class AttackCommand : ICommand
     
     public void BeginExecute()
     {
+        if (!Self.CanPerformActions)
+        {
+            Self.NextCommand();
+            return;
+        }
+
         agent.SetDestination(target.transform.position);
         BeingExecuted = true;
     }
 
-    public void OnExecute()
+    public void OnFixedFrame()
     {
+        if (!Self.CanPerformActions)
+        {
+            Self.StopAllCommands();
+            Self.NextCommand();
+            return;
+        }
+
         if (Vector3.Distance(target.transform.position, Self.transform.position) > Self.stats.AttackRange)
         {
             agent.SetDestination(target.transform.position);
@@ -58,6 +70,11 @@ public class AttackCommand : ICommand
 
     public void OnCancel()
     {
-        Debug.LogWarning(new System.NotImplementedException());
+        return;
+    }
+
+    public void OnInterrupt()
+    {
+        return;
     }
 }

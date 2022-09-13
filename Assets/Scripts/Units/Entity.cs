@@ -15,15 +15,22 @@ public class Entity : MonoBehaviour
     public List<ICommand> commands = new List<ICommand>();
 
     public Stats stats;
+    public Buffs buffs;
+    public Debuffs debuffs;
+
+    public bool CanMove { get => !(debuffs.IsStunned || debuffs.IsFrozen); }
+    public bool CanPerformActions { get => !(!CanMove || debuffs.IsTerrorized); }
+    public bool CanCastSpells { get => !(!CanPerformActions || debuffs.IsSilenced); }
 
     private void Awake()
     {
         stats.OnDeath += OnDeath;
-        //spells.Add(new TestingSpell());
     }
     private void OnEnable()
     {
         stats.Init(this);
+        debuffs.Init(this);
+        buffs.Init(this);
     }
     protected virtual void FixedUpdate()
     {
@@ -33,7 +40,7 @@ public class Entity : MonoBehaviour
 
         if (!CheckIfCommandActive()) return;
 
-        commands[0].OnExecute();
+        commands[0].OnFixedFrame();
 
         stats.RegenerateHealth();
 
@@ -42,7 +49,7 @@ public class Entity : MonoBehaviour
 
     internal void NextCommand()
     {
-        commands.RemoveAt(0);
+        if (commands.Count > 0) commands.RemoveAt(0);
         if (commands.Count == 0)
         {
             commands.Add(new WaitCommand(this));

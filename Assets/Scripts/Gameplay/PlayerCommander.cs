@@ -10,10 +10,9 @@ public class PlayerCommander : MonoBehaviour
     [SerializeField] private BoxSelection selection;
 
     Vector3 mouseClickBegin;
-    Vector3 mousePointCurrent;
 
-    public static Vector3 pointingAtGround = Vector3.zero;
-    public static Entity pointingAtEntity = null;
+    public static Vector3 mouseGroundPoint = Vector3.zero;
+    public static Entity mouseEntityPoint = null;
     public static bool isPointingAtGround;
     public static bool isPointingAtEntity;
 
@@ -57,12 +56,12 @@ public class PlayerCommander : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         isPointingAtGround = Physics.Raycast(ray, out hitOne, 100, groundLayer, QueryTriggerInteraction.Ignore);
-        mousePointCurrent = hitOne.point;
+        mouseGroundPoint = hitOne.point;
 
         isPointingAtEntity = Physics.Raycast(ray, out hitTwo, 100, selectionLayers, QueryTriggerInteraction.Ignore);
-        if (hitTwo.transform) hitTwo.transform.TryGetComponent(out pointingAtEntity);
+        if (hitTwo.transform) hitTwo.transform.TryGetComponent(out mouseEntityPoint);
 
-        selection.SetMousePositions(mouseClickBegin, mousePointCurrent);
+        selection.SetMousePositions(mouseClickBegin, mouseGroundPoint);
     }
 
     public void MoveAndAttackCommand()
@@ -73,13 +72,13 @@ public class PlayerCommander : MonoBehaviour
             {
                 if (!CustomInput.Instance.shiftDown) e.StopAllCommands();
 
-                if (pointingAtEntity.team == Team.player)     //ally
+                if (mouseEntityPoint.team == Team.player)     //ally
                 {
-                    e.commands.Add(new FollowCommand(e, pointingAtEntity));
+                    e.commands.Add(new FollowCommand(e, mouseEntityPoint));
                 }
-                else if (pointingAtEntity.team == Team.boss)  //enemy
+                else if (mouseEntityPoint.team == Team.boss)  //enemy
                 {
-                    e.commands.Add(new AttackCommand(e, pointingAtEntity));
+                    e.commands.Add(new AttackCommand(e, mouseEntityPoint));
                 }
             }
         }
@@ -88,14 +87,14 @@ public class PlayerCommander : MonoBehaviour
             foreach (Entity e in PlayerController.selectedUnits)
             {
                 if (!CustomInput.Instance.shiftDown) e.StopAllCommands();
-                e.commands.Add(new MoveCommand(e, mousePointCurrent));
+                e.commands.Add(new MoveCommand(e, mouseGroundPoint));
             }
         }
     }
     public void StartUnitSelection()
     {
         if (isPointingAtGround)
-            mouseClickBegin = mousePointCurrent;
+            mouseClickBegin = mouseGroundPoint;
         else return;
     }
     public void EndUnitSelection()
@@ -103,9 +102,9 @@ public class PlayerCommander : MonoBehaviour
         List<PlayerUnit> entities = selection.Select();
 
         if (entities.Count == 0 &&
-            pointingAtEntity &&
-            pointingAtEntity.transform != null &&
-            pointingAtEntity.transform.TryGetComponent<PlayerUnit>(out var entity))
+            mouseEntityPoint &&
+            mouseEntityPoint.transform != null &&
+            mouseEntityPoint.transform.TryGetComponent<PlayerUnit>(out var entity))
             entities.Add(entity);
 
         if (!CustomInput.Instance.shiftDown)
@@ -143,9 +142,17 @@ public class PlayerCommander : MonoBehaviour
 
     public void CastSpell(int spellIndex)
     {
-        if (!CustomInput.Instance.shiftDown || PlayerController.selectedUnits[0].commands[0].GetType() == typeof(WaitCommand))
-            PlayerController.selectedUnits[0].StopAllCommands();
+        var selectedUnit = PlayerController.selectedUnits[0];
+        var unitCommands = selectedUnit.commands;
+        var spell = selectedUnit.spells[spellIndex];
 
-        PlayerController.selectedUnits[0].commands.Add(PlayerController.selectedUnits[0].spells[spellIndex].GetCommand(PlayerController.selectedUnits[0]));
+        if (spell.lastCastTime > Time.time + spell.cooldown) return; //spell on cooldown, we cannot cast it
+
+        if (!CustomInput.Instance.shiftDown || unitCommands[0].GetType() == typeof(WaitCommand))
+            selectedUnit.StopAllCommands();
+
+        //todo: start mouse indicator
+        //todo: start cooldown
+        unitCommands.Add(selectedUnit.spells[spellIndex].GetCommand(selectedUnit));
     }
 }

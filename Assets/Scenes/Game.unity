@@ -5549,10 +5549,17 @@ MonoBehaviour:
   animator: {fileID: 0}
   model: {fileID: 0}
   stats:
-    health: 100
-    movementSpeed: 5
-    attackSpeed: 1
-    healthRegeneration: 1
+    health: 0
+    movementSpeed: 0
+    attackSpeed: 0
+    healthRegeneration: 0
+    attackRange: 0
+    attackDamage: 0
+  buffs:
+    health: 0
+    movementSpeed: 0
+    attackSpeed: 0
+    healthRegeneration: 0
     attackRange: 0
     attackDamage: 0
 --- !u!1 &3883116562682186501

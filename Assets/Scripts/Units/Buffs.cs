@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public sealed class Stats
+public sealed class Buffs
 {
     [SerializeField] private float health;
     [SerializeField] private float movementSpeed;
@@ -40,6 +40,10 @@ public sealed class Stats
         LastAttack = 0;
     }
 
+    public void ApplySlow()
+    {
+
+    }
     public void Attack(Entity target)
     {
         self.AttackAnimation();
@@ -48,7 +52,6 @@ public sealed class Stats
     }
     public void Damage(float amount)
     {
-        if (amount == 0) return;
         Health = Mathf.Clamp(Health - amount, 0, MaxHealth);
         if (Health == 0) OnDeath?.Invoke();
     }

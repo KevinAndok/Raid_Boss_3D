@@ -18,18 +18,24 @@ public class WaitCommand : ICommand
         Self.MoveAnimation(false);
     }
 
-    public void OnExecute()
+    public void OnFixedFrame()
     {
         if (Random.value < .001f) Self.IdleTwo();
     }
 
     public void OnComplete()
     {
-        
+        //this command never completes complete
+        return;
     }
 
     public void OnCancel()
     {
-        Debug.LogWarning(new System.NotImplementedException());
+        return;
+    }
+
+    public void OnInterrupt()
+    {
+        return;
     }
 }

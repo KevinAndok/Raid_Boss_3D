@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class FollowCommand : ICommand
+public sealed class FollowCommand : ICommand
 {
     public Entity target;
 
@@ -24,12 +24,23 @@ public class FollowCommand : ICommand
 
     public void BeginExecute()
     {
+        if (!Self.CanPerformActions)
+        {
+            OnComplete();
+            return;
+        }
         agent.SetDestination(target.transform.position);
         BeingExecuted = true;
     }
 
-    public void OnExecute()
+    public void OnFixedFrame()
     {
+        if (!Self.CanPerformActions)
+        {
+            OnComplete();
+            return;
+        }
+
         if (Vector3.Distance(target.transform.position, Self.transform.position) <= followDistance)
         {
             if (agent.destination != Self.transform.position) agent.SetDestination(Self.transform.position);
@@ -48,6 +59,11 @@ public class FollowCommand : ICommand
 
     public void OnCancel()
     {
-        Debug.LogWarning(new System.NotImplementedException());
+        return;
+    }
+
+    public void OnInterrupt()
+    {
+        Self.NextCommand();
     }
 }
