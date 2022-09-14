@@ -44,7 +44,7 @@ public sealed class Debuffs
         terrorizeTime = 0;
         silenceTime = 0;
     }
-    public void FixedUpdateJob()
+    public void ApplyDotDamage()
     {
         var damage = (IsBleeding ? bleedingDamage : 0) + (IsPoisoned ? poisonDamage : 0) + (IsBurning ? burningDamage : 0);
         self.stats.Damage(damage);

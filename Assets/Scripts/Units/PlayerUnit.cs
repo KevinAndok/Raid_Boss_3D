@@ -12,8 +12,10 @@ public sealed class PlayerUnit : Entity
 
     public List<Spell> spells;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         var parent = new GameObject(name);
         parent.transform.parent = transform.parent;
         transform.parent = parent.transform;

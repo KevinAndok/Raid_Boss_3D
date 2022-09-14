@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3883116564036177606}
   - component: {fileID: 3883116564036177604}
   - component: {fileID: 3883116564036177600}
-  - component: {fileID: 3883116564036177601}
   - component: {fileID: -5954374108920058400}
   m_Layer: 7
   m_Name: Sheriff
@@ -69,7 +68,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 5
+  m_Speed: 0
   m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 360
@@ -81,29 +80,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &3883116564036177601
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3883116564036177723}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60f62599613feef4b87c6b5f993fca1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  team: 1
-  navigation: {fileID: 3883116564036177600}
-  animator: {fileID: 3798715857578226206}
-  model: {fileID: 3887194345612847930}
-  stats:
-    health: 100
-    movementSpeed: 5
-    attackSpeed: 1
-    healthRegeneration: 1
-    attackRange: 3
-    attackDamage: 5
 --- !u!114 &-5954374108920058400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,9 +103,18 @@ MonoBehaviour:
     healthRegeneration: 1
     attackRange: 3
     attackDamage: 5
+  buffs:
+    health: 0
+    movementSpeed: 0
+    attackSpeed: 0
+    healthRegeneration: 0
+    attackRange: 0
+    attackDamage: 0
   unitIcon: {fileID: 0}
   selectionCircle: {fileID: 374968145410163847, guid: e04aa9adb5305d44ab8c75e63205dcba, type: 3}
   selectionCircleGFX: {fileID: 0}
+  selectionCircleTrans: {fileID: 0}
+  spells: []
 --- !u!1001 &306847226431614694
 PrefabInstance:
   m_ObjectHideFlags: 0

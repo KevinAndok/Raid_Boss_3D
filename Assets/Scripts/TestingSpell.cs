@@ -54,7 +54,7 @@ public sealed class TestingSpell : ICommand //ID 0
         }
 
         time -= Time.fixedDeltaTime;
-        Debug.Log(time);
+
         if (time <= 0)
         {
             Self.transform.position = Ground;

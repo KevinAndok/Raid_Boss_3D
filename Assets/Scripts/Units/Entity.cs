@@ -6,6 +6,8 @@ public enum Team { none, player, boss };
 
 public class Entity : MonoBehaviour
 {
+    [SerializeField] private int level;
+    public int Level { get => level; private set => level = value; }
     public Team team;
 
     //public PlayerInput input; //for player
@@ -18,15 +20,16 @@ public class Entity : MonoBehaviour
     public Buffs buffs;
     public Debuffs debuffs;
 
+    public bool IsDead { get => stats.Health <= 0; }
     public bool CanMove { get => !(debuffs.IsStunned || debuffs.IsFrozen); }
     public bool CanPerformActions { get => !(!CanMove || debuffs.IsTerrorized); }
     public bool CanCastSpells { get => !(!CanPerformActions || debuffs.IsSilenced); }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         stats.OnDeath += OnDeath;
     }
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         stats.Init(this);
         debuffs.Init(this);
@@ -43,6 +46,7 @@ public class Entity : MonoBehaviour
         commands[0].OnFixedFrame();
 
         stats.RegenerateHealth();
+        debuffs.ApplyDotDamage();
 
         //LookTowardsDirection();
     }

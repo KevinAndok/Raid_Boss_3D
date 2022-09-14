@@ -1,18 +1,14 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 public sealed class AttackCommand : ICommand
 {
     public Entity target;
-    public NavMeshAgent agent;
 
     public bool BeingExecuted { get; set; }
     public Entity Self { get; set; }
 
     public AttackCommand(Entity self, Entity target)
     {
-        agent = self.GetComponent<NavMeshAgent>();
-
         this.Self = self;
         this.target = target;
 
@@ -28,7 +24,7 @@ public sealed class AttackCommand : ICommand
             return;
         }
 
-        agent.SetDestination(target.transform.position);
+        Self.navigation.SetDestination(target.transform.position);
         BeingExecuted = true;
     }
 
@@ -43,7 +39,7 @@ public sealed class AttackCommand : ICommand
 
         if (Vector3.Distance(target.transform.position, Self.transform.position) > Self.stats.AttackRange)
         {
-            agent.SetDestination(target.transform.position);
+            Self.navigation.SetDestination(target.transform.position);
             Self.MoveAnimation(true);
             return;
         }
@@ -53,7 +49,7 @@ public sealed class AttackCommand : ICommand
 
         Self.MoveAnimation(false);
 
-        if (agent.destination != Self.transform.position) agent.SetDestination(Self.transform.position);
+        if (Self.navigation.destination != Self.transform.position) Self.navigation.SetDestination(Self.transform.position);
 
         if (Time.time > Self.stats.LastAttack + (1 / Self.stats.AttackSpeed))
         {
