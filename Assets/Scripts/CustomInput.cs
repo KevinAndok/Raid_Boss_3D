@@ -1,70 +1,62 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class CustomInput : MonoBehaviour
+public sealed class CustomInput : MonoBehaviour
 {
-    public static CustomInput Instance;
-
     #region Events
-    public event Action OnLeftMouseDown;
-    public event Action OnLeftMouseUp;
+    public static event Action OnLeftMouseDown;
+    public static event Action OnLeftMouseUp;
 
-    public event Action OnRightMouseDown;
-    public event Action OnRightMouseUp;
+    public static event Action OnRightMouseDown;
+    public static event Action OnRightMouseUp;
 
-    public event Action OnShiftDown;
-    public event Action OnShiftUp;
+    public static event Action OnShiftDown;
+    public static event Action OnShiftUp;
 
-    public event Action OnCtrlDown;
-    public event Action OnCtrlUp;
+    public static event Action OnCtrlDown;
+    public static event Action OnCtrlUp;
 
-    public event Action OnAltDown;
-    public event Action OnAltUp;
+    public static event Action OnAltDown;
+    public static event Action OnAltUp;
 
-    public event Action OnTabDown;
-    public event Action OnTabUp;
+    public static event Action OnTabDown;
+    public static event Action OnTabUp;
 
-    public event Action OnOneDown;
-    public event Action OnTwoDown;
-    public event Action OnThreeDown;
-    public event Action OnFourDown;
-    public event Action OnFiveDown;
-    public event Action OnSixDown;
-    public event Action OnSevenDown;
-    public event Action OnEightDown;
-    public event Action OnNineDown;
-    public event Action OnZeroDown;
+    public static event Action OnOneDown;
+    public static event Action OnTwoDown;
+    public static event Action OnThreeDown;
+    public static event Action OnFourDown;
+    public static event Action OnFiveDown;
+    public static event Action OnSixDown;
+    public static event Action OnSevenDown;
+    public static event Action OnEightDown;
+    public static event Action OnNineDown;
+    public static event Action OnZeroDown;
 
-    public event Action OnQDown;
-    public event Action OnWDown;
-    public event Action OnEDown;
-    public event Action OnRDown;
-    public event Action OnADown;
-    public event Action OnSDown;
-    public event Action OnDDown;
-    public event Action OnFDown;
-    public event Action OnZDown;
-    public event Action OnXDown;
-    public event Action OnCDown;
-    public event Action OnVDown;
+    public static event Action OnQDown;
+    public static event Action OnWDown;
+    public static event Action OnEDown;
+    public static event Action OnRDown;
+    public static event Action OnADown;
+    public static event Action OnSDown;
+    public static event Action OnDDown;
+    public static event Action OnFDown;
+    public static event Action OnZDown;
+    public static event Action OnXDown;
+    public static event Action OnCDown;
+    public static event Action OnVDown;
     #endregion
 
     #region Properties
-    public bool leftMouseDown { get; private set; }
-    public bool rightMouseDown { get; private set; }
-    public bool shiftDown { get; private set; }
-    public bool ctrlDown { get; private set; }
-    public bool altDown { get; private set; }
-    public bool tabDown { get; private set; }
+    public static bool leftMouseDown { get; private set; }
+    public static bool rightMouseDown { get; private set; }
+    public static bool shiftDown { get; private set; }
+    public static bool ctrlDown { get; private set; }
+    public static bool altDown { get; private set; }
+    public static bool tabDown { get; private set; }
     #endregion
 
-    private void Awake()
-    {
-        if (Instance) Destroy(Instance);
-        Instance = this;
-    }
-
+    #region Functions
     public void OnMouseLeft()
     {
         leftMouseDown = !leftMouseDown;
@@ -172,4 +164,5 @@ public class CustomInput : MonoBehaviour
     public void OnX() => OnXDown?.Invoke();
     public void OnC() => OnCDown?.Invoke();
     public void OnV() => OnVDown?.Invoke();
+    #endregion
 }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Shapes;
 
-public class BoxSelection : MonoBehaviour
+public sealed class BoxSelection : MonoBehaviour
 {
     Vector3 mouseClickBegin;
     Vector3 mouseClickCurrent;
@@ -38,7 +38,7 @@ public class BoxSelection : MonoBehaviour
 
     public void SetMousePositions(Vector3 begin, Vector3 current)
     {
-        if (CustomInput.Instance.leftMouseDown) mouseClickBegin = begin;
+        if (CustomInput.leftMouseDown) mouseClickBegin = begin;
         else mouseClickBegin = current;
         mouseClickCurrent = current;
     }

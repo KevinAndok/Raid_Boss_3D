@@ -2,7 +2,7 @@ using Shapes;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerUnit : Entity
+public sealed class PlayerUnit : Entity
 {
     public Sprite unitIcon;
 

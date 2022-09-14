@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
-public class PlayerCommander : MonoBehaviour
+public sealed class PlayerCommander : MonoBehaviour
 {
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask selectionLayers;
@@ -19,35 +17,61 @@ public class PlayerCommander : MonoBehaviour
     public PlayerController PlayerController;
 
     private void Awake() => selection.layers = selectionLayers;
-    private void Start()
+
+    #region InputEventsRegister
+    private void OnEnable()
     {
-        CustomInput.Instance.OnLeftMouseDown += StartUnitSelection;
-        CustomInput.Instance.OnLeftMouseUp += EndUnitSelection;
+        CustomInput.OnLeftMouseDown += StartUnitSelection;
+        CustomInput.OnLeftMouseUp += EndUnitSelection;
 
-        CustomInput.Instance.OnRightMouseDown += MoveAndAttackCommand;
+        CustomInput.OnRightMouseDown += MoveAndAttackCommand;
 
-        CustomInput.Instance.OnQDown += () => CastSpell(0);
-        CustomInput.Instance.OnWDown += () => CastSpell(1);
-        CustomInput.Instance.OnEDown += () => CastSpell(2);
-        CustomInput.Instance.OnRDown += () => CastSpell(3);
+        CustomInput.OnQDown += () => CastSpell(0);
+        CustomInput.OnWDown += () => CastSpell(1);
+        CustomInput.OnEDown += () => CastSpell(2);
+        CustomInput.OnRDown += () => CastSpell(3);
 
-        CustomInput.Instance.OnADown += () => CastSpell(4);
-        CustomInput.Instance.OnSDown += () => CastSpell(5);
-        CustomInput.Instance.OnDDown += () => CastSpell(6);
-        CustomInput.Instance.OnFDown += () => CastSpell(7);
+        CustomInput.OnADown += () => CastSpell(4);
+        CustomInput.OnSDown += () => CastSpell(5);
+        CustomInput.OnDDown += () => CastSpell(6);
+        CustomInput.OnFDown += () => CastSpell(7);
 
-        CustomInput.Instance.OnZDown += () => CastSpell(8);
-        CustomInput.Instance.OnXDown += () => CastSpell(9);
-        CustomInput.Instance.OnCDown += () => CastSpell(10);
-        CustomInput.Instance.OnVDown += () => CastSpell(11);
+        CustomInput.OnZDown += () => CastSpell(8);
+        CustomInput.OnXDown += () => CastSpell(9);
+        CustomInput.OnCDown += () => CastSpell(10);
+        CustomInput.OnVDown += () => CastSpell(11);
     }
+    private void OnDisable()
+    {
+        CustomInput.OnLeftMouseDown -= StartUnitSelection;
+        CustomInput.OnLeftMouseUp -= EndUnitSelection;
+
+        CustomInput.OnRightMouseDown -= MoveAndAttackCommand;
+
+        CustomInput.OnQDown -= () => CastSpell(0);
+        CustomInput.OnWDown -= () => CastSpell(1);
+        CustomInput.OnEDown -= () => CastSpell(2);
+        CustomInput.OnRDown -= () => CastSpell(3);
+
+        CustomInput.OnADown -= () => CastSpell(4);
+        CustomInput.OnSDown -= () => CastSpell(5);
+        CustomInput.OnDDown -= () => CastSpell(6);
+        CustomInput.OnFDown -= () => CastSpell(7);
+
+        CustomInput.OnZDown -= () => CastSpell(8);
+        CustomInput.OnXDown -= () => CastSpell(9);
+        CustomInput.OnCDown -= () => CastSpell(10);
+        CustomInput.OnVDown -= () => CastSpell(11);
+    }
+    #endregion
+
     private void Update()
     {
         GetMousePoint();
     }
     private void LateUpdate()
     {
-        selection.gameObject.SetActive(CustomInput.Instance.leftMouseDown);
+        selection.gameObject.SetActive(CustomInput.leftMouseDown);
     }
 
     private void GetMousePoint()
@@ -70,7 +94,7 @@ public class PlayerCommander : MonoBehaviour
         {
             foreach (Entity e in PlayerController.selectedUnits)
             {
-                if (!CustomInput.Instance.shiftDown) e.StopAllCommands();
+                if (!CustomInput.shiftDown) e.StopAllCommands();
 
                 if (mouseEntityPoint.team == Team.player)     //ally
                 {
@@ -86,7 +110,7 @@ public class PlayerCommander : MonoBehaviour
         {
             foreach (Entity e in PlayerController.selectedUnits)
             {
-                if (!CustomInput.Instance.shiftDown) e.StopAllCommands();
+                if (!CustomInput.shiftDown) e.StopAllCommands();
                 e.commands.Add(new MoveCommand(e, mouseGroundPoint));
             }
         }
@@ -107,7 +131,7 @@ public class PlayerCommander : MonoBehaviour
             mouseEntityPoint.transform.TryGetComponent<PlayerUnit>(out var entity))
             entities.Add(entity);
 
-        if (!CustomInput.Instance.shiftDown)
+        if (!CustomInput.shiftDown)
         {
             PlayerController.UnselectAllUnits();
         }
@@ -121,7 +145,7 @@ public class PlayerCommander : MonoBehaviour
         {
             if (item.team != Team.player) continue;
 
-            if (CustomInput.Instance.shiftDown)
+            if (CustomInput.shiftDown)
             {
                 switch (PlayerController.selectedUnits.Contains(item))
                 {
@@ -148,7 +172,7 @@ public class PlayerCommander : MonoBehaviour
 
         if (spell.lastCastTime > Time.time + spell.cooldown) return; //spell on cooldown, we cannot cast it
 
-        if (!CustomInput.Instance.shiftDown || unitCommands[0].GetType() == typeof(WaitCommand))
+        if (!CustomInput.shiftDown || unitCommands[0].GetType() == typeof(WaitCommand))
             selectedUnit.StopAllCommands();
 
         //todo: start mouse indicator

@@ -1,30 +1,45 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public sealed class PlayerController : MonoBehaviour
 {
     public UnitGroups UnitGroups;
     public List<PlayerUnit> selectedUnits = new List<PlayerUnit>();
 
     public Color selectedColor;
 
-    private void Awake()
+    #region InputEventsRegister
+    private void OnEnable()
     {
-        CustomInput.Instance.OnZeroDown     += () => SelectionGroup(0);
-        CustomInput.Instance.OnOneDown      += () => SelectionGroup(1);
-        CustomInput.Instance.OnTwoDown      += () => SelectionGroup(2);
-        CustomInput.Instance.OnThreeDown    += () => SelectionGroup(3);
-        CustomInput.Instance.OnFourDown     += () => SelectionGroup(4);
-        CustomInput.Instance.OnFiveDown     += () => SelectionGroup(5);
-        CustomInput.Instance.OnSixDown      += () => SelectionGroup(6);
-        CustomInput.Instance.OnSevenDown    += () => SelectionGroup(7);
-        CustomInput.Instance.OnEightDown    += () => SelectionGroup(8);
-        CustomInput.Instance.OnNineDown     += () => SelectionGroup(9);
+        CustomInput.OnZeroDown += () => SelectionGroup(0);
+        CustomInput.OnOneDown += () => SelectionGroup(1);
+        CustomInput.OnTwoDown += () => SelectionGroup(2);
+        CustomInput.OnThreeDown += () => SelectionGroup(3);
+        CustomInput.OnFourDown += () => SelectionGroup(4);
+        CustomInput.OnFiveDown += () => SelectionGroup(5);
+        CustomInput.OnSixDown += () => SelectionGroup(6);
+        CustomInput.OnSevenDown += () => SelectionGroup(7);
+        CustomInput.OnEightDown += () => SelectionGroup(8);
+        CustomInput.OnNineDown += () => SelectionGroup(9);
 
-        CustomInput.Instance.OnTabDown      += SwitchSelectedUnit;
+        CustomInput.OnTabDown += SwitchSelectedUnit;
     }
+    private void OnDisable()
+    {
+        CustomInput.OnZeroDown -= () => SelectionGroup(0);
+        CustomInput.OnOneDown -= () => SelectionGroup(1);
+        CustomInput.OnTwoDown -= () => SelectionGroup(2);
+        CustomInput.OnThreeDown -= () => SelectionGroup(3);
+        CustomInput.OnFourDown -= () => SelectionGroup(4);
+        CustomInput.OnFiveDown -= () => SelectionGroup(5);
+        CustomInput.OnSixDown -= () => SelectionGroup(6);
+        CustomInput.OnSevenDown -= () => SelectionGroup(7);
+        CustomInput.OnEightDown -= () => SelectionGroup(8);
+        CustomInput.OnNineDown -= () => SelectionGroup(9);
+
+        CustomInput.OnTabDown -= SwitchSelectedUnit;
+    }
+    #endregion
 
     private void Update()
     {
@@ -41,7 +56,7 @@ public class PlayerController : MonoBehaviour
 
     private void ColorCirclesBasedonSelection(PlayerUnit unit)
     {
-        if (!CustomInput.Instance.altDown || true)
+        if (!CustomInput.altDown || true)
         {
             if (unit == selectedUnits[0]) unit.selectionCircleGFX.Color = selectedColor;
             else unit.selectionCircleGFX.Color = Color.white;
@@ -69,12 +84,12 @@ public class PlayerController : MonoBehaviour
 
     public void SelectionGroup(int number)
     {
-        if (CustomInput.Instance.shiftDown)
+        if (CustomInput.shiftDown)
         {
             UnitGroups.AddUnitGroup(number, selectedUnits);
             return;
         }
-        if (CustomInput.Instance.ctrlDown || CustomInput.Instance.altDown)
+        if (CustomInput.ctrlDown || CustomInput.altDown)
         {
             UnitGroups.SetUnitGroup(number, selectedUnits);
             return;
