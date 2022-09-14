@@ -102,7 +102,7 @@ public class PlayerCommander : MonoBehaviour
         List<PlayerUnit> entities = selection.Select();
 
         if (entities.Count == 0 &&
-            mouseEntityPoint &&
+            isPointingAtEntity &&
             mouseEntityPoint.transform != null &&
             mouseEntityPoint.transform.TryGetComponent<PlayerUnit>(out var entity))
             entities.Add(entity);
