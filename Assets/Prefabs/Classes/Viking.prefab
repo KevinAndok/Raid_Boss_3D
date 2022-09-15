@@ -92,24 +92,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b93d21babfc10d64c8ccba5db3a2b6cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  level: 0
   team: 1
   navigation: {fileID: 3883116564036177600}
   animator: {fileID: 3797101780239828948}
   model: {fileID: 3885784436263072630}
   stats:
-    health: 100
-    movementSpeed: 5
-    attackSpeed: 1
-    healthRegeneration: 1
-    attackRange: 3
-    attackDamage: 5
-  buffs:
-    health: 0
-    movementSpeed: 0
-    attackSpeed: 0
-    healthRegeneration: 0
-    attackRange: 0
-    attackDamage: 0
+    baseMovementSpeed: 5
+    baseHealth: 0
+    baseHealthRegeneration: 0
+    baseMana: 0
+    baseManaRegeneration: 0
+    baseAttackSpeed: 0
+    baseAttackRange: 0
+    baseAttackDamage: 0
+    baseHitChance: 0
+    baseCritChance: 0
+    baseSpellDamage: 0
+    baseStrength: 0
+    baseAgility: 0
+    baseVitality: 0
+    baseDexerity: 0
+    baseIntelligence: 0
+    baseWisdom: 0
+    physicalArmor: 0
+    magicArmor: 0
+    bleedResistance: 0
+    poisonResistance: 0
+    burnResistance: 0
+    SlowImmune: 0
+    StunImmune: 0
+    FreezeImmune: 0
+    TerrorizeImmune: 0
+    SilenceImmune: 0
   unitIcon: {fileID: 0}
   selectionCircle: {fileID: 374968145410163847, guid: e04aa9adb5305d44ab8c75e63205dcba, type: 3}
   selectionCircleGFX: {fileID: 0}

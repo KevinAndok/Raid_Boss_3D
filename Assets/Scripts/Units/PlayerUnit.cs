@@ -25,12 +25,14 @@ public sealed class PlayerUnit : Entity
         selectionCircleTrans = selectionCircle.transform;
     }
 
+    protected override void Update()
+    {
+        MoveSelectionCircle();
+        RotateSelectionCircle();
+    }
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-
-        MoveSelectionCircle();
-        RotateSelectionCircle();
     }
 
     private void MoveSelectionCircle()

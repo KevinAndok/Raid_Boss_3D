@@ -47,8 +47,14 @@ public class Entity : MonoBehaviour
 
         stats.RegenerateHealth();
         debuffs.ApplyDotDamage();
+        debuffs.StatDebuffExpiration();
 
         //LookTowardsDirection();
+    }
+
+    protected virtual void Update()
+    {
+        
     }
 
     internal void NextCommand()
