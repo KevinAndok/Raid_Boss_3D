@@ -5,15 +5,15 @@ using UnityEngine;
 public sealed class Stats
 {
     #region ScaleConstants
-    private const float STRENGTHDAMAGESCALE = 1;
-    private const float AGILITYATTACKSPEEDSCALE = 1;
-    private const float VITALITYHEALTHSCALE = 1;
-    private const float VITALITYHEALTHREGENSCALE = 1;
-    private const float DEXERITYMOVEMENTSCALE = 1;
-    private const float DEXERITYHITCHANCESCALE = 1;
-    private const float INTELLIGENCEMANASCALE = 1;
-    private const float INTELLIGENCEMANAREGENSCALE = 1;
-    private const float WISDOMSPELLDAMAGESCALE = 1;
+    private const float STRENGTH_DAMAGE_SCALE = 1;
+    private const float AGILITY_ATTACKSPEED_SCALE = 1;
+    private const float VITALITY_HEALTH_SCALE = 1;
+    private const float VITALITY_HEALTHREGEN_SCALE = 1;
+    private const float DEXERITY_MOVEMENT_SCALE = 1;
+    private const float DEXERITY_HITCHANCE_SCALE = 1;
+    private const float INTELLIGENCE_MANA_SCALE = 1;
+    private const float INTELLIGENCE_MANAREGEN_SCALE = 1;
+    private const float WISDOM_SPELLDAMAGE_SCALE = 1;
     #endregion
 
     [SerializeField] private float baseHealth;
@@ -90,35 +90,35 @@ public sealed class Stats
     void StrengthUpdate(float value)
     {
         Strength = baseStrength + value;
-        AttackDamage = baseAttackDamage + Strength * STRENGTHDAMAGESCALE;
+        AttackDamage = baseAttackDamage + Strength * STRENGTH_DAMAGE_SCALE;
     }
     void AgilityUpdate(float value)
     {
         Agility = baseAgility + value;
-        AttackSpeed = baseAttackSpeed + Agility * AGILITYATTACKSPEEDSCALE;
+        AttackSpeed = baseAttackSpeed + Agility * AGILITY_ATTACKSPEED_SCALE;
     }
     void VitalityUpdate(float value)
     {
         Vitality = baseVitality + value;
-        MaxHealth = baseHealth + Vitality * VITALITYHEALTHSCALE;
-        HealthRegeneration = baseHealthRegeneration + Vitality * VITALITYHEALTHREGENSCALE;
+        MaxHealth = baseHealth + Vitality * VITALITY_HEALTH_SCALE;
+        HealthRegeneration = baseHealthRegeneration + Vitality * VITALITY_HEALTHREGEN_SCALE;
     }
     void DexerityUpdate(float value)
     {
         Dexerity = baseVitality + value;
-        BaseMovementSpeed = baseMovementSpeed + Dexerity * DEXERITYMOVEMENTSCALE;
-        HitChance = Mathf.Clamp01(baseHealthRegeneration + Dexerity * DEXERITYHITCHANCESCALE);
+        BaseMovementSpeed = baseMovementSpeed + Dexerity * DEXERITY_MOVEMENT_SCALE;
+        HitChance = Mathf.Clamp01(baseHealthRegeneration + Dexerity * DEXERITY_HITCHANCE_SCALE);
     }
     void IntelligenceUpdate(float value)
     {
         Intelligence = baseVitality + value;
-        MaxMana = baseMana + Intelligence * INTELLIGENCEMANASCALE;
-        ManaRegeneration = baseManaRegeneration + Intelligence * INTELLIGENCEMANAREGENSCALE;
+        MaxMana = baseMana + Intelligence * INTELLIGENCE_MANA_SCALE;
+        ManaRegeneration = baseManaRegeneration + Intelligence * INTELLIGENCE_MANAREGEN_SCALE;
     }
     void WisdomUpdate(float value)
     {
         Wisdom = baseVitality + value;
-        SpellDamage = baseSpellDamage + Wisdom * WISDOMSPELLDAMAGESCALE;
+        SpellDamage = baseSpellDamage + Wisdom * WISDOM_SPELLDAMAGE_SCALE;
     }
     #endregion
 

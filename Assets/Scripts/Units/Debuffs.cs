@@ -4,8 +4,8 @@ using System;
 [Serializable]
 public sealed class Debuffs
 {
-    const float BLEEDMODIFIER = -25f;
-    const float POISONMODIFIER = 25f;
+    const float BLEED_MODIFIER = -25f;
+    const float POISON_MODIFIER = 25f;
 
     private float bleedingDamage, bleedingTime; //decreases over time
     private float poisonDamage, poisonTime;     //increases over time
@@ -49,8 +49,8 @@ public sealed class Debuffs
         var damage = (IsBleeding ? bleedingDamage : 0) + (IsPoisoned ? poisonDamage : 0) + (IsBurning ? burningDamage : 0);
         self.stats.Damage(damage);
 
-        poisonDamage += (poisonDamage * POISONMODIFIER) * Time.fixedDeltaTime;
-        bleedingDamage += (bleedingDamage * BLEEDMODIFIER) * Time.fixedDeltaTime;
+        poisonDamage += (poisonDamage * POISON_MODIFIER) * Time.fixedDeltaTime;
+        bleedingDamage += (bleedingDamage * BLEED_MODIFIER) * Time.fixedDeltaTime;
     }
 
     public void ApplySlow()
