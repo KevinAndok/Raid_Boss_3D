@@ -52,11 +52,11 @@ public sealed class Debuffs
     public bool IntelligenceDebuff { get => intelligenceDebuffTime > Time.time; }
     public bool WisdomDebuff { get => wisdomDebuffTime > Time.time; }
 
-    private Entity self;
+    private Entity Self;
 
     public void Init(Entity self)
     {
-        this.self = self;
+        this.Self = self;
 
         bleedingDamage = 0;
         bleedingTime = 0;
@@ -74,10 +74,13 @@ public sealed class Debuffs
     public void ApplyDotDamage()
     {
         var damage = 
-            (IsBleeding ? bleedingDamage * (1 - self.stats.BleedResistance) : 0) + 
-            (IsPoisoned ? poisonDamage * (1 - self.stats.PoisonResistance) : 0) + 
-            (IsBurning ? burningDamage * (1 - self.stats.BurnResistance) : 0);
-        self.stats.Damage(damage);
+            (IsBleeding ? bleedingDamage * (1 - Self.stats.BleedResistance) : 0) + 
+            (IsPoisoned ? poisonDamage * (1 - Self.stats.PoisonResistance) : 0) + 
+            (IsBurning ? burningDamage * (1 - Self.stats.BurnResistance) : 0);
+
+        if (damage == 0) return;
+
+        Self.stats.Damage(damage);
 
         poisonDamage += (poisonDamage * POISON_MODIFIER) * Time.fixedDeltaTime;
         bleedingDamage += (bleedingDamage * BLEED_MODIFIER) * Time.fixedDeltaTime;
@@ -86,32 +89,32 @@ public sealed class Debuffs
     {
         if (!StrengthDebuff && strengthDebuffValue != 0)
         {
-            self.stats.AddStrength(strengthDebuffValue);
+            Self.stats.AddStrength(strengthDebuffValue);
             strengthDebuffValue = 0;
         }
         if (!AgilityDebuff && agilityDebuffValue != 0)
         {
-            self.stats.AddAgility(agilityDebuffValue);
+            Self.stats.AddAgility(agilityDebuffValue);
             agilityDebuffValue = 0;
         }
         if (!VitalityDebuff && vitalityDebuffValue != 0)
         {
-            self.stats.AddVitality(vitalityDebuffValue);
+            Self.stats.AddVitality(vitalityDebuffValue);
             vitalityDebuffValue = 0;
         }
         if (!DexerityDebuff && dexerityDebuffValue != 0)
         {
-            self.stats.AddDexerity(dexerityDebuffValue);
+            Self.stats.AddDexerity(dexerityDebuffValue);
             dexerityDebuffValue = 0;
         }
         if (!IntelligenceDebuff && intelligenceDebuffValue != 0)
         {
-            self.stats.AddIntelligence(intelligenceDebuffValue);
+            Self.stats.AddIntelligence(intelligenceDebuffValue);
             intelligenceDebuffValue = 0;
         }
         if (!WisdomDebuff && wisdomDebuffValue != 0)
         {
-            self.stats.AddWisdom(wisdomDebuffValue);
+            Self.stats.AddWisdom(wisdomDebuffValue);
             wisdomDebuffValue = 0;
         }
     }
@@ -123,7 +126,7 @@ public sealed class Debuffs
     public void DebuffStrength(float value, float duration)
     {
         if (StrengthDebuff && strengthDebuffValue > value) return;
-        self.stats.AddStrength(-strengthDebuffValue);
+        Self.stats.AddStrength(-strengthDebuffValue);
         strengthDebuffValue = value;
         strengthDebuffTime = Time.time + duration;
     }
@@ -132,7 +135,7 @@ public sealed class Debuffs
     public void DebuffAgility(float value, float duration)
     {
         if (AgilityDebuff && agilityDebuffValue > value) return;
-        self.stats.AddAgility(-agilityDebuffValue);
+        Self.stats.AddAgility(-agilityDebuffValue);
         agilityDebuffValue = value;
         agilityDebuffTime = Time.time + duration;
     }
@@ -141,7 +144,7 @@ public sealed class Debuffs
     public void DebuffVitality(float value, float duration)
     {
         if (VitalityDebuff && vitalityDebuffValue > value) return;
-        self.stats.AddVitality(-vitalityDebuffValue);
+        Self.stats.AddVitality(-vitalityDebuffValue);
         vitalityDebuffValue = value;
         vitalityDebuffTime = Time.time + duration;
     }
@@ -150,7 +153,7 @@ public sealed class Debuffs
     public void DebuffDexerity(float value, float duration)
     {
         if (DexerityDebuff && dexerityDebuffValue > value) return;
-        self.stats.AddDexerity(-dexerityDebuffValue);
+        Self.stats.AddDexerity(-dexerityDebuffValue);
         dexerityDebuffValue = value;
         dexerityDebuffTime = Time.time + duration;
     }
@@ -159,7 +162,7 @@ public sealed class Debuffs
     public void DebuffIntelligence(float value, float duration)
     {
         if (IntelligenceDebuff && intelligenceDebuffValue > value) return;
-        self.stats.AddIntelligence(-intelligenceDebuffValue);
+        Self.stats.AddIntelligence(-intelligenceDebuffValue);
         intelligenceDebuffValue = value;
         intelligenceDebuffTime = Time.time + duration;
     }
@@ -168,7 +171,7 @@ public sealed class Debuffs
     public void DebuffWisdom(float value, float duration)
     {
         if (WisdomDebuff && wisdomDebuffValue > value) return;
-        self.stats.AddWisdom(-wisdomDebuffValue);
+        Self.stats.AddWisdom(-wisdomDebuffValue);
         wisdomDebuffValue = value;
         wisdomDebuffTime = Time.time + duration;
     }
@@ -178,12 +181,12 @@ public sealed class Debuffs
     #region Slow
     public void ApplySlow(float duration, float percentage)
     {
-        if (self.stats.SlowImmune) return;
-        self.StartCoroutine(SlowDebuff(duration, percentage));
+        if (Self.stats.SlowImmune) return;
+        Self.StartCoroutine(SlowDebuff(duration, percentage));
     }
     IEnumerator SlowDebuff(float duration, float percentage)
     {
-        var stats = self.stats;
+        var stats = Self.stats;
         var value = stats.MovementSpeed * percentage;
         float startTime = Time.time;
 
@@ -204,7 +207,7 @@ public sealed class Debuffs
     #region Interrupt
     public void InterruptCasting()
     {
-        self.commands[0].OnInterrupt();
+        Self.commands[0].OnInterrupt();
     }
     #endregion
     #region Bleed
@@ -214,6 +217,11 @@ public sealed class Debuffs
         else bleedingDamage += dps;
         bleedingTime = Time.time + 6;
     }
+    public void StopBleeding()
+    {
+        if (!IsBleeding) return;
+        bleedingTime = 0;
+    }
     #endregion
     #region Poison
     public void ApplyPoison(float dps)
@@ -221,6 +229,11 @@ public sealed class Debuffs
         if (!IsPoisoned) poisonDamage = dps;
         else poisonDamage += dps;
         poisonTime = Time.time + 2;
+    }
+    public void StopPoison()
+    {
+        if (!IsPoisoned) return;
+        poisonTime = 0;
     }
     #endregion
     #region Burn
@@ -230,44 +243,85 @@ public sealed class Debuffs
         else burningDamage += dps;
         burningTime = Time.time + 4;
     }
+    public void StopBurning()
+    {
+        if (!IsBurning) return;
+        burningTime = 0;
+    }
     #endregion
     #region Stun
     public void Stun(float duration)
     {
-        if (self.stats.StunImmune) return;
+        if (Self.stats.StunImmune) return;
         stunTime = Time.time + duration;
         InterruptCasting();
-        self.StopAllCommands();
+        Self.StopAllCommands();
         //TODO: Stun effect
+    }
+    public void RemoveStun()
+    {
+        if (!IsStunned) return;
+        stunTime = 0;
     }
     #endregion
     #region Freeze
     public void Freeze(float duration)
     {
-        if (self.stats.FreezeImmune) return;
+        if (Self.stats.FreezeImmune) return;
         freezeTime = Time.time + duration;
         InterruptCasting();
-        self.StopAllCommands();
+        Self.StopAllCommands();
         //TODO: Freeze effect
+    }
+    public void RemoveFreeze()
+    {
+        if (!IsFrozen) return;
+        freezeTime = 0;
     }
     #endregion
     #region Silence
     public void Silence(float duration)
     {
-        if (self.stats.SilenceImmune) return;
-        freezeTime = Time.time + duration;
+        if (Self.stats.SilenceImmune) return;
+        silenceTime = Time.time + duration;
         InterruptCasting();
         //TODO: Silence effect
+    }
+    public void RemoveSilence()
+    {
+        if (!IsSilenced) return;
+        silenceTime = 0;
     }
     #endregion
     #region Terrorize
     public void Terrorize(float duration, Vector3 position)
     {
-        if (self.stats.TerrorizeImmune) return;
+        if (Self.stats.TerrorizeImmune) return;
         terrorizeTime = Time.time + duration;
-        position = self.transform.position - position;
-        self.StopAllCommands();
-        self.commands.Add(new MoveCommand(self, position));
+        position = Self.transform.position - position;
+        Self.StopAllCommands();
+        Self.commands.Add(new MoveCommand(Self, position));
+    }
+    public void RemoveTerrorize()
+    {
+        if (!IsTerrorized) return;
+        terrorizeTime = 0;
+    }
+    #endregion
+
+    #region Cleanse
+    public void CleanseDebuffs(bool stun, bool freeze, bool terrorize, bool silence)
+    {
+        if (stun && IsStunned) RemoveStun();
+        if (freeze && IsFrozen) RemoveFreeze();
+        if (terrorize && IsTerrorized) RemoveTerrorize();
+        if (silence && IsSilenced) RemoveSilence();
+    }
+    public void CleanseDOT(bool bleed, bool poison, bool burn)
+    {
+        if (bleed && IsBleeding) StopBleeding();
+        if (poison && IsPoisoned) StopPoison();
+        if (burn && IsBurning) StopBurning();
     }
     #endregion
 }

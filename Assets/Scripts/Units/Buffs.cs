@@ -4,11 +4,11 @@ using System;
 [Serializable]
 public sealed class Buffs
 {
-    private Entity self;
+    private Entity Self;
 
     public void Init(Entity self)
     {
-        this.self = self;
+        this.Self = self;
     }
 
 }
