@@ -73,9 +73,9 @@ public sealed class Debuffs
     #region Fixed Update Methods
     public void ApplyDotDamage()
     {
-        var damage = 
-            (IsBleeding ? bleedingDamage * (1 - Self.stats.BleedResistance) : 0) + 
-            (IsPoisoned ? poisonDamage * (1 - Self.stats.PoisonResistance) : 0) + 
+        var damage =
+            (IsBleeding ? bleedingDamage * (1 - Self.stats.BleedResistance) : 0) +
+            (IsPoisoned ? poisonDamage * (1 - Self.stats.PoisonResistance) : 0) +
             (IsBurning ? burningDamage * (1 - Self.stats.BurnResistance) : 0);
 
         if (damage == 0) return;
@@ -190,7 +190,7 @@ public sealed class Debuffs
         var value = stats.MovementSpeed * percentage;
         float startTime = Time.time;
 
-        stats.MovementSpeedUpdate(stats.MovementSpeed - value);
+        stats.AddMovementSpeed(-value);
 
         yield return new WaitForSeconds(duration);
 
@@ -201,7 +201,7 @@ public sealed class Debuffs
             yield return null;
         }
 
-        stats.MovementSpeedUpdate(stats.MovementSpeed + value);
+        stats.AddMovementSpeed(value);
     }
     #endregion
     #region Interrupt
