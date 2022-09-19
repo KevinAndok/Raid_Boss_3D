@@ -5,6 +5,7 @@ using UnityEngine;
 public sealed class Stats
 {
     #region ScaleConstants
+    private const float MAX_ATTACK_SPEED_VALUE = 100;
     private const float MAX_RESISTANCE_VALUE = 100;
     private const float CRIT_DAMAGE_MULTIPLIER = 2;
 
@@ -48,7 +49,7 @@ public sealed class Stats
     [SerializeField] private float baseVitality;        //health, health regeneration
     [SerializeField] private float baseDexerity;        //crit chance, hit chance
     [SerializeField] private float baseIntelligence;    //mana, mana regeneration
-    [SerializeField] private float baseWisdom;          //spell damage, magical resistance --
+    [SerializeField] private float baseWisdom;          //spell damage, magical resistance 
     [Space(10)]
     [SerializeField] private float basePhysicalArmor;
     [SerializeField] private float baseMagicArmor;
@@ -56,7 +57,8 @@ public sealed class Stats
     [SerializeField] private float basePoisonResistance;
     [SerializeField] private float baseBurnResistance;
     [Space(10)]
-    public bool SlowImmune;
+    public bool MovementSlowImmune;
+    public bool AttackSlowImmune;
     public bool StunImmune;
     public bool FreezeImmune;
     public bool TerrorizeImmune;
@@ -90,7 +92,7 @@ public sealed class Stats
     }
     public float ManaRegeneration { get => bonusManaRegeneration + baseManaRegeneration; private set { bonusManaRegeneration = value; } }
     public float MovementSpeed { get => bonusMovementSpeed + baseMovementSpeed; private set { bonusMovementSpeed = value; } }
-    public float AttackSpeed { get => bonusAttackSpeed + baseAttackSpeed; private set { bonusAttackSpeed = value; } }
+    public float AttackSpeed { get => (bonusAttackSpeed + baseAttackSpeed) / MAX_ATTACK_SPEED_VALUE; private set { bonusAttackSpeed = Mathf.Clamp(value, 0, MAX_ATTACK_SPEED_VALUE - baseAttackSpeed); } }
     public float AttackRange { get => baseAttackRange; }
     public float AttackDamage { get => bonusAttackDamage + baseAttackDamage; private set { bonusAttackDamage = value; } }
     public float HitChance { get => bonusHitChance + baseHitChance; private set { bonusHitChance = Mathf.Clamp(value, 0, 1 - baseHitChance); } }
@@ -210,14 +212,25 @@ public sealed class Stats
 
     //TODO: add bonus from items
 
+    #region Attack Speed
+    void AttackSpeedUpdate()
+    {
+        //TODO: set animation speed
+    }
+    public void AddAttackSpeed(float percentage)
+    {
+        bonusMovementSpeed += AttackSpeed * percentage;
+        AttackSpeedUpdate();
+    }
+    #endregion
     #region Movement Speed
     void MovementSpeedUpdate()
     {
         Self.navigation.speed = MovementSpeed;
     }
-    public void AddMovementSpeed(float value)
+    public void AddMovementSpeed(float percentage)
     {
-        bonusMovementSpeed += value;
+        bonusMovementSpeed += MovementSpeed * percentage;
         MovementSpeedUpdate();
     }
     #endregion

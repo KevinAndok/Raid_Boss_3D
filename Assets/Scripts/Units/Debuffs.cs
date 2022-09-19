@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 [Serializable]
@@ -8,14 +7,22 @@ public sealed class Debuffs
     const float BLEED_MODIFIER = -25f;
     const float POISON_MODIFIER = 25f;
 
+    //DOT
     private float bleedingDamage, bleedingTime; //decreases over time
     private float poisonDamage, poisonTime;     //increases over time
     private float burningDamage, burningTime;   //same damage over time
 
+    //status
     private float stunTime;
     private float freezeTime;
     private float terrorizeTime;
     private float silenceTime;
+
+    //slow
+    private float movementSlowTime;
+    private float movementSlowValue;
+    private float attackSpeedSlowTime;
+    private float attackSpeedSlowValue;
 
     //strength
     private float strengthDebuffTime;
@@ -45,6 +52,9 @@ public sealed class Debuffs
     public bool IsPoisoned { get => poisonTime > Time.time; }
     public bool IsBleeding { get => bleedingTime > Time.time; }
 
+    public bool IsMovementSlowed { get => movementSlowTime > Time.time; }
+    public bool IsAttackSpeedSlowed { get => attackSpeedSlowTime > Time.time; }
+
     public bool StrengthDebuff { get => strengthDebuffTime > Time.time; }
     public bool AgilityDebuff { get => agilityDebuffTime > Time.time; }
     public bool VitalityDebuff { get => vitalityDebuffTime > Time.time; }
@@ -71,6 +81,12 @@ public sealed class Debuffs
     }
 
     #region Fixed Update Methods
+    public void DebuffsUpdate()
+    {
+        ApplyDotDamage();
+        StatDebuffExpiration();
+        SlowDebuffExpiration();
+    }
     public void ApplyDotDamage()
     {
         var damage =
@@ -117,6 +133,19 @@ public sealed class Debuffs
             Self.stats.AddWisdom(wisdomDebuffValue);
             wisdomDebuffValue = 0;
         }
+    }
+    public void SlowDebuffExpiration()
+    {
+        if (!IsMovementSlowed && movementSlowValue != 0)
+        {
+            Self.stats.AddMovementSpeed(movementSlowValue);
+            movementSlowValue = 0;
+        }
+        if (!IsAttackSpeedSlowed && attackSpeedSlowValue != 0)
+        {
+            Self.stats.AddAttackSpeed(attackSpeedSlowValue);
+            attackSpeedSlowValue = 0;
+        } 
     }
     #endregion
 
@@ -178,30 +207,28 @@ public sealed class Debuffs
     #endregion
 
     #endregion
-    #region Slow
-    public void ApplySlow(float duration, float percentage)
+    #region Movement Speed
+    public void ApplyMovementSlow(float duration, float percentage)
     {
-        if (Self.stats.SlowImmune) return;
-        Self.StartCoroutine(SlowDebuff(duration, percentage));
+        if (Self.stats.MovementSlowImmune) return;
+
+        if (IsMovementSlowed) Self.stats.AddMovementSpeed(movementSlowValue - percentage);
+        else Self.stats.AddMovementSpeed(-percentage);
+
+        movementSlowValue = percentage;
+        movementSlowTime = Time.time + duration;
     }
-    IEnumerator SlowDebuff(float duration, float percentage)
+    #endregion
+    #region Attack Speed
+    public void ApplyAttackSlow(float duration, float percentage)
     {
-        var stats = Self.stats;
-        var value = stats.MovementSpeed * percentage;
-        float startTime = Time.time;
+        if (Self.stats.AttackSlowImmune) return;
 
-        stats.AddMovementSpeed(-value);
+        if (IsAttackSpeedSlowed) Self.stats.AddAttackSpeed(attackSpeedSlowValue - percentage);
+        else Self.stats.AddAttackSpeed(-percentage);
 
-        yield return new WaitForSeconds(duration);
-
-        while (Time.time < startTime + duration)
-        {
-            //if unit becomes slow immune while slowed, we want to stop the slow debuff
-            if (stats.SlowImmune) break;
-            yield return null;
-        }
-
-        stats.AddMovementSpeed(value);
+        attackSpeedSlowValue = percentage;
+        attackSpeedSlowTime = Time.time + duration;
     }
     #endregion
     #region Interrupt
