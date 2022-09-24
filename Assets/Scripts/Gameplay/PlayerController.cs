@@ -65,7 +65,7 @@ public sealed class PlayerController : MonoBehaviour
         unit.selectionCircleGFX.Color = selectedColor;
     }
 
-    public void UnselectAllUnits()
+    public void DeselectAllUnits()
     {
         foreach (PlayerUnit e in selectedUnits) e.selectionCircle.SetActive(false);
         selectedUnits.Clear();
@@ -73,10 +73,11 @@ public sealed class PlayerController : MonoBehaviour
 
     public void SelectUnit(PlayerUnit unit)
     {
+        if (selectedUnits.Contains(unit)) return;
         unit.selectionCircle.SetActive(true);
         selectedUnits.Add(unit);
     }
-    public void UnselectUnit(PlayerUnit unit)
+    public void DeselectUnit(PlayerUnit unit)
     {
         unit.selectionCircle.SetActive(false);
         selectedUnits.Remove(unit);
@@ -95,7 +96,7 @@ public sealed class PlayerController : MonoBehaviour
             return;
         }
         //select units
-        UnselectAllUnits();
+        DeselectAllUnits();
         foreach (var unit in UnitGroups.SelectionGroups[number]) SelectUnit(unit);
     }
 

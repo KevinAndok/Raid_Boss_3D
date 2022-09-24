@@ -4,10 +4,8 @@ using UnityEngine;
 public sealed class PlayerCommander : MonoBehaviour
 {
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private LayerMask selectionLayers;
-    [SerializeField] private BoxSelection selection;
-
-    Vector3 mouseClickBegin;
+    //[SerializeField] private LayerMask selectionLayers;
+    //[SerializeField] private BoxSelection selection;
 
     public static Vector3 mouseGroundPoint = Vector3.zero;
     public static Entity mouseEntityPoint = null;
@@ -16,13 +14,13 @@ public sealed class PlayerCommander : MonoBehaviour
 
     public PlayerController PlayerController;
 
-    private void Awake() => selection.layers = selectionLayers;
+    //private void Awake() => selection.layers = selectionLayers;
 
     #region InputEventsRegister
     private void OnEnable()
     {
-        CustomInput.OnLeftMouseDown += StartUnitSelection;
-        CustomInput.OnLeftMouseUp += EndUnitSelection;
+        ////CustomInput.OnLeftMouseDown += StartUnitSelection;
+        ////CustomInput.OnLeftMouseUp += EndUnitSelection;
 
         CustomInput.OnRightMouseDown += MoveAndAttackCommand;
 
@@ -43,8 +41,8 @@ public sealed class PlayerCommander : MonoBehaviour
     }
     private void OnDisable()
     {
-        CustomInput.OnLeftMouseDown -= StartUnitSelection;
-        CustomInput.OnLeftMouseUp -= EndUnitSelection;
+        //CustomInput.OnLeftMouseDown -= StartUnitSelection;
+        //CustomInput.OnLeftMouseUp -= EndUnitSelection;
 
         CustomInput.OnRightMouseDown -= MoveAndAttackCommand;
 
@@ -71,21 +69,18 @@ public sealed class PlayerCommander : MonoBehaviour
     }
     private void LateUpdate()
     {
-        selection.gameObject.SetActive(CustomInput.leftMouseDown);
+        //selection.gameObject.SetActive(CustomInput.leftMouseDown);
     }
 
     private void GetMousePoint()
     {
-        RaycastHit hitOne, hitTwo;
+        RaycastHit hitOne;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         isPointingAtGround = Physics.Raycast(ray, out hitOne, 100, groundLayer, QueryTriggerInteraction.Collide);
         mouseGroundPoint = hitOne.point;
 
-        isPointingAtEntity = Physics.Raycast(ray, out hitTwo, 100, selectionLayers, QueryTriggerInteraction.Collide);
-        if (hitTwo.transform) hitTwo.transform.TryGetComponent(out mouseEntityPoint);
-
-        selection.SetMousePositions(mouseClickBegin, mouseGroundPoint);
+        //selection.SetMousePositions(mouseClickBegin, mouseGroundPoint);
     }
 
     public void MoveAndAttackCommand()
@@ -132,55 +127,6 @@ public sealed class PlayerCommander : MonoBehaviour
             }
         }
     }
-    public void StartUnitSelection()
-    {
-        if (isPointingAtGround)
-            mouseClickBegin = mouseGroundPoint;
-        else return;
-    }
-    public void EndUnitSelection()
-    {
-        List<PlayerUnit> entities = selection.Select();
-
-        if (entities.Count == 0 &&
-            isPointingAtEntity &&
-            mouseEntityPoint.transform != null &&
-            mouseEntityPoint.transform.TryGetComponent<PlayerUnit>(out var entity))
-            entities.Add(entity);
-
-        if (!CustomInput.shiftDown)
-        {
-            PlayerController.UnselectAllUnits();
-        }
-
-        ToggleSelection(entities);
-    }
-
-    private void ToggleSelection(List<PlayerUnit> entities)
-    {
-        foreach (var item in entities)
-        {
-            if (item.team != Team.player) continue;
-
-            if (CustomInput.shiftDown)
-            {
-                switch (PlayerController.selectedUnits.Contains(item))
-                {
-                    case true:
-                        PlayerController.UnselectUnit(item);
-                        break;
-                    case false:
-                        PlayerController.SelectUnit(item);
-                        break;
-                }
-                continue;
-            }
-
-            if (!PlayerController.selectedUnits.Contains(item))
-                PlayerController.SelectUnit(item);
-        }
-    }
-
     public void CastSpell(int spellIndex)
     {
         var selectedUnit = PlayerController.selectedUnits[0];

@@ -29,6 +29,7 @@ public class Entity : MonoBehaviour
 
     protected virtual void Awake()
     {
+        EntityManager.AllEntities.Add(this);
         stats.OnDeath += OnDeath;
     }
     protected virtual void OnEnable()
