@@ -79,10 +79,10 @@ public sealed class PlayerCommander : MonoBehaviour
         RaycastHit hitOne, hitTwo;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        isPointingAtGround = Physics.Raycast(ray, out hitOne, 100, groundLayer, QueryTriggerInteraction.Ignore);
+        isPointingAtGround = Physics.Raycast(ray, out hitOne, 100, groundLayer, QueryTriggerInteraction.Collide);
         mouseGroundPoint = hitOne.point;
 
-        isPointingAtEntity = Physics.Raycast(ray, out hitTwo, 100, selectionLayers, QueryTriggerInteraction.Ignore);
+        isPointingAtEntity = Physics.Raycast(ray, out hitTwo, 100, selectionLayers, QueryTriggerInteraction.Collide);
         if (hitTwo.transform) hitTwo.transform.TryGetComponent(out mouseEntityPoint);
 
         selection.SetMousePositions(mouseClickBegin, mouseGroundPoint);
@@ -108,6 +108,23 @@ public sealed class PlayerCommander : MonoBehaviour
         }
         else if (isPointingAtGround)
         {
+            //var dir = (PlayerController.selectedUnits[0].transform.position - mouseGroundPoint).normalized;
+
+            //for (int i = 0; i < PlayerController.selectedUnits.Count; i++)
+            //{
+            //    var unit = PlayerController.selectedUnits[i];
+
+            //    if (!CustomInput.shiftDown) unit.StopAllCommands();
+
+            //    var offsetX = Mathf.RoundToInt(i / 2f); //ceil?
+            //    var offsetY = Mathf.RoundToInt(i / 5f); //ceil?
+
+            //    Vector3 left = Vector3.Cross(dir, Vector3.up).normalized;
+
+            //    unit.commands.Add(new MoveCommand(unit, mouseGroundPoint + (i % 2 == 1 ? -1 : 1) * offsetX * left + dir * offsetY));
+
+
+            //}
             foreach (Entity e in PlayerController.selectedUnits)
             {
                 if (!CustomInput.shiftDown) e.StopAllCommands();

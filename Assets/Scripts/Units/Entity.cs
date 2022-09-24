@@ -9,11 +9,13 @@ public class Entity : MonoBehaviour
     [SerializeField] private int level;
     public int Level { get => level; private set => level = value; }
     public Team team;
+    public float entitySize = .5f;
 
     //public PlayerInput input; //for player
     public NavMeshAgent navigation;
     public Animator animator;
     public Transform model;
+    public Collider unitCollider;
     public List<ICommand> commands = new List<ICommand>();
 
     public Stats stats;

@@ -22,6 +22,8 @@ public sealed class PlayerUnit : Entity
         selectionCircle = Instantiate(selectionCircle);
         selectionCircle.transform.parent = transform.parent;
         selectionCircleGFX = selectionCircle.GetComponent<Disc>();
+        selectionCircleGFX.Radius = entitySize;
+        selectionCircleGFX.Thickness = entitySize / 2;
         selectionCircleTrans = selectionCircle.transform;
     }
 
@@ -40,7 +42,7 @@ public sealed class PlayerUnit : Entity
         selectionCircleTrans.position = transform.position;
     }
 
-    void RotateSelectionCircle() 
+    void RotateSelectionCircle()
     {
         if (selectionCircle.activeInHierarchy) selectionCircleGFX.DashOffset += Time.fixedDeltaTime * 1;
     }

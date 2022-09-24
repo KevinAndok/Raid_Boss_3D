@@ -21,6 +21,8 @@ public class WaitCommand : ICommand
     public void OnFixedFrame()
     {
         if (Random.value < .001f) Self.IdleTwo();
+
+        //collision
     }
 
     public void OnComplete()

@@ -54,7 +54,7 @@ public sealed class MoveCommand : ICommand
     public void OnComplete()
     {
         Self.MoveAnimation(false);
-        //remove this from entity command list
+        //remove this from command command list
         Self.NextCommand();
     }
 

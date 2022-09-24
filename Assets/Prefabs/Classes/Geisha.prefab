@@ -79,7 +79,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!114 &8795237925343887010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,6 +97,7 @@ MonoBehaviour:
   navigation: {fileID: 3883116564036177600}
   animator: {fileID: 3796633488142969164}
   model: {fileID: 3885638488639435336}
+  unitCollider: {fileID: 3883116564036177604}
   stats:
     baseMovementSpeed: 5
     baseHealth: 0
@@ -115,12 +116,13 @@ MonoBehaviour:
     baseDexerity: 0
     baseIntelligence: 0
     baseWisdom: 0
-    physicalArmor: 0
-    magicArmor: 0
-    bleedResistance: 0
-    poisonResistance: 0
-    burnResistance: 0
-    SlowImmune: 0
+    basePhysicalArmor: 0
+    baseMagicArmor: 0
+    baseBleedResistance: 0
+    basePoisonResistance: 0
+    baseBurnResistance: 0
+    MovementSlowImmune: 0
+    AttackSlowImmune: 0
     StunImmune: 0
     FreezeImmune: 0
     TerrorizeImmune: 0

@@ -71,7 +71,7 @@ MonoBehaviour:
   angRadiansEnd: 2.3561945
   radius: 0.5
   radiusSpace: 0
-  thickness: 0.5
+  thickness: 0.25
   thicknessSpace: 0
   arcEndCaps: 0
   matchDashSpacingToSize: 1
@@ -80,10 +80,10 @@ MonoBehaviour:
     type: 1
     space: -2
     snap: 1
-    size: 3
+    size: 6
     spacing: 0.5
     offset: 0
-    shapeModifier: 1
+    shapeModifier: 0
 --- !u!33 &374968145410163842
 MeshFilter:
   m_ObjectHideFlags: 0
