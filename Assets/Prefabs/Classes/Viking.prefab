@@ -79,7 +79,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 0
+  m_ObstacleAvoidanceType: 1
 --- !u!114 &-7318472997903844949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,6 +94,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level: 0
   team: 1
+  entitySize: 0.5
   navigation: {fileID: 3883116564036177600}
   animator: {fileID: 3797101780239828948}
   model: {fileID: 3885784436263072630}
