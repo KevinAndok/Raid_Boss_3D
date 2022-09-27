@@ -7,6 +7,9 @@ public sealed class AttackCommand : ICommand
     public bool BeingExecuted { get; set; }
     public Entity Self { get; set; }
 
+    public OrderType Type => OrderType.offensive;
+    public GameObject WaypointObject { get; set; }
+
     public AttackCommand(Entity self, Entity target)
     {
         this.Self = self;
@@ -72,5 +75,12 @@ public sealed class AttackCommand : ICommand
     public void OnInterrupt()
     {
         return;
+    }
+
+    public void DisplayCommand(Pool waypointPool)
+    {
+        var waypoint = waypointPool.ObjectPool.Get();
+        waypoint.GetComponent<Waypoint>().Set(target.transform, target.entitySize, Type);
+        WaypointObject = waypoint;
     }
 }

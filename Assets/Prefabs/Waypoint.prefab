@@ -179,5 +179,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d80365034726243be06b7fc35843ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  orderColors:
+  - {r: 0.32809892, g: 0.8396226, b: 0.29703632, a: 1}
+  - {r: 0.8392157, g: 0.29803923, b: 0.30323514, a: 1}
+  - {r: 0.29803923, g: 0.600864, b: 0.8392157, a: 1}
+  - {r: 0.8133126, g: 0.8392157, b: 0.29803923, a: 1}
   disc: {fileID: 633694120962876696}
   followPosition: {fileID: 0}

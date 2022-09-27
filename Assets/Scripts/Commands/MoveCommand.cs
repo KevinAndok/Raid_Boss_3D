@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.GraphicsBuffer;
 
 public sealed class MoveCommand : ICommand
 {
@@ -7,6 +8,9 @@ public sealed class MoveCommand : ICommand
 
     public bool BeingExecuted { get; set; }
     public Entity Self { get; set; }
+
+    public OrderType Type => OrderType.movement;
+    public GameObject WaypointObject { get; set; }
 
     public MoveCommand(Entity entity, Vector3 position)
     {
@@ -66,5 +70,12 @@ public sealed class MoveCommand : ICommand
     public void OnInterrupt()
     {
         return;
+    }
+
+    public void DisplayCommand(Pool waypointPool)
+    {
+        var waypoint = waypointPool.ObjectPool.Get();
+        waypoint.GetComponent<Waypoint>().Set(position, Self.entitySize, Type);
+        WaypointObject = waypoint;
     }
 }

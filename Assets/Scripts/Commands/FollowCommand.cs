@@ -7,6 +7,8 @@ public sealed class FollowCommand : ICommand
 
     public bool BeingExecuted { get; set; }
     public Entity Self { get; set; }
+    public OrderType Type => OrderType.movement;
+    public GameObject WaypointObject { get; set; }
 
     NavMeshAgent agent;
     float followDistance = 1.5f;
@@ -65,5 +67,12 @@ public sealed class FollowCommand : ICommand
     public void OnInterrupt()
     {
         Self.NextCommand();
+    }
+
+    public void DisplayCommand(Pool waypointPool)
+    {
+        var waypoint = waypointPool.ObjectPool.Get();
+        waypoint.GetComponent<Waypoint>().Set(target.transform, target.entitySize, Type);
+        WaypointObject = waypoint;
     }
 }

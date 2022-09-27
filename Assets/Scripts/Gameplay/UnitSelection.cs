@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitSelection : MonoBehaviour
+public sealed class UnitSelection : MonoBehaviour
 {
     public PlayerController controller;
 

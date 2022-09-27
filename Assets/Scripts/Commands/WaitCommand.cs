@@ -5,6 +5,9 @@ public class WaitCommand : ICommand
     public bool BeingExecuted { get; set; }
     public Entity Self { get; set; }
 
+    public OrderType Type => OrderType.none;
+    public GameObject WaypointObject { get; set; }
+
     public WaitCommand(Entity entity)
     {
         this.Self = entity;
@@ -37,6 +40,11 @@ public class WaitCommand : ICommand
     }
 
     public void OnInterrupt()
+    {
+        return;
+    }
+
+    public void DisplayCommand(Pool waypointPool)
     {
         return;
     }

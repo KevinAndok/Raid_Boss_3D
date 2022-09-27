@@ -1,15 +1,16 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public sealed class TestingSpell : ICommand //ID 0
 {
-    Vector3 Ground;
+    Vector3 position;
     float time = 2;
     Spell Spell;
 
     public TestingSpell(Entity self, Spell spell, Vector3 ground)
     {
         Self = self;
-        Ground = ground;
+        position = ground;
         Spell = spell;
 
         if (self.commands.Count > 0 && self.commands[0].GetType() == typeof(WaitCommand)) self.commands.RemoveAt(0);
@@ -18,6 +19,9 @@ public sealed class TestingSpell : ICommand //ID 0
 
     public bool BeingExecuted { get; set; }
     public Entity Self { get; set; }
+
+    public OrderType Type => OrderType.utility;
+    public GameObject WaypointObject { get; set; }
 
     public void BeginExecute()
     {
@@ -31,6 +35,13 @@ public sealed class TestingSpell : ICommand //ID 0
         Spell.lastCastTime = Time.time;
         BeingExecuted = true;
         Self.CastAnimation(true);
+    }
+
+    public void DisplayCommand(Pool waypointPool)
+    {
+        var waypoint = waypointPool.ObjectPool.Get();
+        waypoint.GetComponent<Waypoint>().Set(position, Self.entitySize, Type);
+        WaypointObject = waypoint;
     }
 
     public void OnCancel()
@@ -57,8 +68,8 @@ public sealed class TestingSpell : ICommand //ID 0
 
         if (time <= 0)
         {
-            Self.transform.position = Ground;
-            Self.navigation.destination = Ground;
+            Self.transform.position = position;
+            Self.navigation.destination = position;
             OnComplete();
         }
     }

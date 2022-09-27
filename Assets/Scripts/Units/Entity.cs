@@ -57,12 +57,16 @@ public class Entity : MonoBehaviour
 
     protected virtual void Update()
     {
-        
+
     }
 
     internal void NextCommand()
     {
-        if (commands.Count > 0) commands.RemoveAt(0);
+        if (commands.Count > 0)
+        {
+            if (commands[0].WaypointObject) PoolingSystem.GetPoolByName("Waypoint").ObjectPool.Release(commands[0].WaypointObject);
+            commands.RemoveAt(0);
+        }
         if (commands.Count == 0)
         {
             commands.Add(new WaitCommand(this));
@@ -98,10 +102,26 @@ public class Entity : MonoBehaviour
     {
         DeathAnimation(true);
     }
-    public void StopCurrentCommand() => commands[0].OnCancel();
+    public void StopCurrentCommand() 
+    {
+        if (commands[0].WaypointObject) PoolingSystem.GetPoolByName("Waypoint").ObjectPool.Release(commands[0].WaypointObject);
+        commands[0].OnCancel();
+    }
     public void StopAllCommands()
     {
-        StopCurrentCommand();
+        var pool = PoolingSystem.GetPoolByName("Waypoint");
+        
+        foreach (var command in commands)
+        {
+            if (commands[0].WaypointObject) pool.ObjectPool.Release(commands[0].WaypointObject);
+            command.OnCancel();
+        }
+
         commands.Clear();
+    }
+    public void DisplayCommands() //TODO: call this from player conntroller
+    {
+        var pool = PoolingSystem.GetPoolByName("Waypoint");
+        foreach(ICommand command in commands) command.DisplayCommand(pool);
     }
 }
