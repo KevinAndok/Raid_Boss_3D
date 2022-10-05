@@ -40,15 +40,15 @@ public sealed class PoolingSystem : MonoBehaviour
         Debug.LogWarning("Pool not found");
         return null;
     }
-    public void ClearAllPools()
+    public static void ClearAllPools()
     {
         foreach (Pool pool in Pools) pool.ObjectPool.Clear();
     }
-    public void ClearPoolByName(string poolName)
+    public static void ClearPoolByName(string poolName)
     {
         foreach (Pool p in Pools)
         {
-            if (p.poolName == name)
+            if (p.poolName == poolName)
             {
                 p.ObjectPool.Clear();
                 return;
@@ -57,7 +57,7 @@ public sealed class PoolingSystem : MonoBehaviour
 
         Debug.LogWarning("Pool not found");
     }
-    public void ClearPool(Pool pool)
+    public static void ClearPool(Pool pool)
     {
         foreach (Pool p in Pools)
         {
@@ -99,8 +99,12 @@ public sealed class Pool
     {
         var obj = GameObject.Instantiate(objectPrefab);
         obj.transform.parent = parent.transform;
+        obj.SetActive(false);
         return obj;
     }
     void OnTakeFromPool(GameObject _gameObject) => _gameObject.SetActive(true);
-    void OnReturnedToPool(GameObject _gameObject) => _gameObject.SetActive(false);
+    void OnReturnedToPool(GameObject _gameObject)
+    {
+        /*if (_gameObject) */_gameObject.SetActive(false);
+    }
 }

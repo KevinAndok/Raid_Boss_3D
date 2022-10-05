@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine.AI;
 using UnityEngine;
+using UnityEngine.AI;
 
 public enum Team { none, player, boss };
 
@@ -64,7 +64,8 @@ public class Entity : MonoBehaviour
     {
         if (commands.Count > 0)
         {
-            if (commands[0].WaypointObject) PoolingSystem.GetPoolByName("Waypoint").ObjectPool.Release(commands[0].WaypointObject);
+            if (commands[0].WaypointBeingDisplayed) 
+                PoolingSystem.GetPoolByName("Waypoint").ObjectPool.Release(commands[0].WaypointObject);
             commands.RemoveAt(0);
         }
         if (commands.Count == 0)
@@ -102,26 +103,41 @@ public class Entity : MonoBehaviour
     {
         DeathAnimation(true);
     }
-    public void StopCurrentCommand() 
+    public void StopCurrentCommand()
     {
-        if (commands[0].WaypointObject) PoolingSystem.GetPoolByName("Waypoint").ObjectPool.Release(commands[0].WaypointObject);
+        if (commands[0].WaypointBeingDisplayed) 
+            PoolingSystem.GetPoolByName("Waypoint").ObjectPool.Release(commands[0].WaypointObject);
         commands[0].OnCancel();
     }
     public void StopAllCommands()
     {
         var pool = PoolingSystem.GetPoolByName("Waypoint");
-        
+
         foreach (var command in commands)
         {
-            if (commands[0].WaypointObject) pool.ObjectPool.Release(commands[0].WaypointObject);
+            if (commands[0].WaypointObject && commands[0].WaypointObject.activeInHierarchy)
+                pool.ObjectPool.Release(commands[0].WaypointObject);
             command.OnCancel();
         }
 
         commands.Clear();
     }
-    public void DisplayCommands() //TODO: call this from player conntroller
+    public void DisplayCommands()
     {
         var pool = PoolingSystem.GetPoolByName("Waypoint");
-        foreach(ICommand command in commands) command.DisplayCommand(pool);
+        foreach (ICommand command in commands)
+        {
+            if (!command.WaypointBeingDisplayed)
+                command.DisplayCommand(pool);
+        }
+    }
+    public void HideCommands()
+    {
+        var pool = PoolingSystem.GetPoolByName("Waypoint");
+        foreach (ICommand command in commands)
+        {
+            if (command.WaypointBeingDisplayed)
+                pool.ObjectPool.Release(command.WaypointObject);
+        }
     }
 }
