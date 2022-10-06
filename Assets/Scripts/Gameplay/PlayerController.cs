@@ -67,6 +67,7 @@ public sealed class PlayerController : MonoBehaviour
             {
                 unit.selectionCircleGFX.Color = Color.white;
                 unit.HideCommands();
+
             }
             return;
         }

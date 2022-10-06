@@ -1,11 +1,11 @@
-using System.Collections.Generic;
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public sealed class PlayerCommander : MonoBehaviour
 {
     [SerializeField] private LayerMask groundLayer;
-    //[SerializeField] private LayerMask selectionLayers;
-    //[SerializeField] private BoxSelection selection;
+    [SerializeField] private LayerMask entityLayer;
 
     public static Vector3 mouseGroundPoint = Vector3.zero;
     public static Entity mouseEntityPoint = null;
@@ -13,8 +13,6 @@ public sealed class PlayerCommander : MonoBehaviour
     public static bool isPointingAtEntity;
 
     public PlayerController PlayerController;
-
-    //private void Awake() => selection.layers = selectionLayers;
 
     #region InputEventsRegister
     private void OnEnable()
@@ -69,7 +67,7 @@ public sealed class PlayerCommander : MonoBehaviour
     }
     private void LateUpdate()
     {
-        //selection.gameObject.SetActive(CustomInput.leftMouseDown);
+
     }
 
     private void GetMousePoint()
@@ -78,53 +76,29 @@ public sealed class PlayerCommander : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         isPointingAtGround = Physics.Raycast(ray, out hitOne, 100, groundLayer, QueryTriggerInteraction.Collide);
-        mouseGroundPoint = hitOne.point;
+        mouseGroundPoint = isPointingAtGround ? hitOne.point : Vector3.zero;
 
-        //selection.SetMousePositions(mouseClickBegin, mouseGroundPoint);
+        isPointingAtEntity = Physics.Raycast(ray, out hitOne, 100, entityLayer, QueryTriggerInteraction.Collide);
+        if (hitOne.collider) hitOne.collider.gameObject.TryGetComponent<Entity>(out mouseEntityPoint);
     }
 
     public void MoveAndAttackCommand()
     {
         if (isPointingAtEntity)
         {
-            foreach (Entity e in PlayerController.selectedUnits)
+            if (mouseEntityPoint.team == Team.player)     //ally
             {
-                if (!CustomInput.shiftDown) e.StopAllCommands();
-
-                if (mouseEntityPoint.team == Team.player)     //ally
-                {
-                    e.commands.Add(new FollowCommand(e, mouseEntityPoint));
-                }
-                else if (mouseEntityPoint.team == Team.boss)  //enemy
-                {
-                    e.commands.Add(new AttackCommand(e, mouseEntityPoint));
-                }
+                CommandUnits(typeof(FollowCommand));
+            }
+            else if (mouseEntityPoint.team == Team.boss)  //enemy
+            {
+                CommandUnits(typeof(AttackCommand));
             }
         }
         else if (isPointingAtGround)
         {
-            //var dir = (PlayerController.selectedUnits[0].transform.position - mouseGroundPoint).normalized;
-
-            //for (int i = 0; i < PlayerController.selectedUnits.Count; i++)
-            //{
-            //    var unit = PlayerController.selectedUnits[i];
-
-            //    if (!CustomInput.shiftDown) unit.StopAllCommands();
-
-            //    var offsetX = Mathf.RoundToInt(i / 2f); //ceil?
-            //    var offsetY = Mathf.RoundToInt(i / 5f); //ceil?
-
-            //    Vector3 left = Vector3.Cross(dir, Vector3.up).normalized;
-
-            //    unit.commands.Add(new MoveCommand(unit, mouseGroundPoint + (i % 2 == 1 ? -1 : 1) * offsetX * left + dir * offsetY));
-
-
-            //}
-            foreach (Entity e in PlayerController.selectedUnits)
-            {
-                if (!CustomInput.shiftDown) e.StopAllCommands();
-                e.commands.Add(new MoveCommand(e, mouseGroundPoint));
-            }
+            //CommandUnits(object command)
+            CommandUnits(typeof(MoveCommand));
         }
     }
     public void CastSpell(int spellIndex)
@@ -141,5 +115,42 @@ public sealed class PlayerCommander : MonoBehaviour
         //todo: start mouse indicator
         //todo: start cooldown
         unitCommands.Add(selectedUnit.spells[spellIndex].GetCommand(selectedUnit));
+    }
+
+    public void CommandUnits(Type command)
+    {
+        if (PlayerController.selectedUnits.Count == 0) return;
+
+        if (CustomInput.altDown)
+        {
+            //all selected
+            foreach (Entity e in PlayerController.selectedUnits)
+            {
+                if (!CustomInput.shiftDown) e.StopAllCommands();
+                IssueCommand(e, command);
+            }
+        }
+        else
+        {
+            //only selected[0]
+            var e = PlayerController.selectedUnits[0];
+            if (!CustomInput.shiftDown) e.StopAllCommands();
+            IssueCommand(e, command);
+        }
+    }
+    public void IssueCommand(Entity e, Type command)
+    {
+        if (command == typeof(MoveCommand))
+        {
+            e.commands.Add(new MoveCommand(e, mouseGroundPoint));
+        }
+        else if (command == typeof(AttackCommand))
+        {
+            e.commands.Add(new AttackCommand(e, mouseEntityPoint));
+        }
+        else if (command == typeof(FollowCommand))
+        {
+            e.commands.Add(new FollowCommand(e, mouseEntityPoint));
+        }
     }
 }
