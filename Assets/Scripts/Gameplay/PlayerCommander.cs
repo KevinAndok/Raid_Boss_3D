@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public sealed class PlayerCommander : MonoBehaviour
@@ -17,8 +16,8 @@ public sealed class PlayerCommander : MonoBehaviour
     #region InputEventsRegister
     private void OnEnable()
     {
-        ////CustomInput.OnLeftMouseDown += StartUnitSelection;
-        ////CustomInput.OnLeftMouseUp += EndUnitSelection;
+        //CustomInput.OnLeftMouseDown += StartUnitSelection;
+        //CustomInput.OnLeftMouseUp += EndUnitSelection;
 
         CustomInput.OnRightMouseDown += MoveAndAttackCommand;
 
