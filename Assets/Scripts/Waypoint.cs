@@ -44,6 +44,6 @@ public sealed class Waypoint : MonoBehaviour
 
     private void Update()
     {
-        if (followPosition != null) transform.position = followPosition.position;
+        if (followPosition != null) transform.position = followPosition.position + Vector3.up * .1f;
     }
 }

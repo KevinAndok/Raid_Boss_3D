@@ -94,11 +94,35 @@ public class Entity : MonoBehaviour
             model.localScale = Vector3.one;
         }
     }
-    private void DeathAnimation(bool state) => animator.SetBool("IsDead", state);
-    public void MoveAnimation(bool state) => animator.SetBool("IsWalking", state);
-    public void CastAnimation(bool state) => animator.SetBool("Casting", state);
-    public void AttackAnimation() => animator.SetTrigger("Attack");
-    public void IdleTwo() => animator.SetTrigger("IdleTwo");
+
+    #region Animations
+    private void DeathAnimation(bool state)
+    {
+        if (!animator) return;
+        animator?.SetBool("IsDead", state);
+    }
+    public void MoveAnimation(bool state)
+    {
+        if (!animator) return;
+        animator?.SetBool("IsWalking", state);
+    }
+    public void CastAnimation(bool state)
+    {
+        if (!animator) return;
+        animator?.SetBool("Casting", state);
+    }
+    public void AttackAnimation()
+    {
+        if (!animator) return;
+        animator.SetTrigger("Attack");
+    }
+    public void IdleTwo()
+    {
+        if (!animator) return;
+        animator.SetTrigger("IdleTwo");
+    }
+    #endregion
+
     private void OnDeath()
     {
         DeathAnimation(true);
@@ -128,7 +152,9 @@ public class Entity : MonoBehaviour
         foreach (ICommand command in commands)
         {
             if (!command.WaypointBeingDisplayed)
+            {
                 command.DisplayCommand(pool);
+            }
         }
     }
     public void HideCommands()
@@ -137,7 +163,10 @@ public class Entity : MonoBehaviour
         foreach (ICommand command in commands)
         {
             if (command.WaypointBeingDisplayed)
+            {
                 pool.ObjectPool.Release(command.WaypointObject);
+                command.WaypointObject = null;
+            }
         }
     }
 }

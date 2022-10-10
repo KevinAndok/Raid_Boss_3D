@@ -89,6 +89,7 @@ public sealed class PlayerController : MonoBehaviour
         if (selectedUnits.Contains(unit)) return;
         unit.selectionCircle.SetActive(true);
         selectedUnits.Add(unit);
+        if (unit == selectedUnits[0] || CustomInput.altDown) unit.DisplayCommands();
     }
     public void DeselectUnit(PlayerUnit unit)
     {
@@ -119,10 +120,8 @@ public sealed class PlayerController : MonoBehaviour
         if (selectedUnits.Count < 2) return;
 
         var unit = selectedUnits[0];
-        selectedUnits.RemoveAt(0);
-        selectedUnits.Add(unit);
-
-        unit.HideCommands();
+        DeselectUnit(unit);
+        SelectUnit(unit);
         selectedUnits[0].DisplayCommands();
     }
 }

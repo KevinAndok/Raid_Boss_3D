@@ -40,7 +40,7 @@ public sealed class AttackCommand : ICommand
             return;
         }
 
-        if (Vector3.Distance(target.transform.position, Self.transform.position) > Self.stats.AttackRange)
+        if (Vector3.Distance(target.transform.position, Self.transform.position) > Self.stats.AttackRange + Self.entitySize + target.entitySize)
         {
             Self.navigation.SetDestination(target.transform.position);
             Self.MoveAnimation(true);
