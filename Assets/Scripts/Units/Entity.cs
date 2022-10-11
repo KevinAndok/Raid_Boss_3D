@@ -17,6 +17,7 @@ public class Entity : MonoBehaviour
     public Transform model;
     public Collider unitCollider;
     public List<ICommand> commands = new List<ICommand>();
+    public StatusBar statusBar; //TODO: make this into a separate class with health bar, mana bar and cast bar separated as transforms
 
     public Stats stats;
     public Buffs buffs;
@@ -29,6 +30,10 @@ public class Entity : MonoBehaviour
 
     protected virtual void Awake()
     {
+        var parent = new GameObject(name);
+        parent.transform.parent = transform.parent;
+        transform.parent = parent.transform;
+
         EntityManager.AllEntities.Add(this);
         stats.OnDeath += OnDeath;
     }

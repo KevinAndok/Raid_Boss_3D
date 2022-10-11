@@ -79,6 +79,7 @@ public sealed class Stats
         }
     }
     public float HealthRegeneration { get => bonusHealthRegeneration + baseHealthRegeneration; private set { bonusHealthRegeneration = value; } }
+    public float HealthPercentage { get => Health / MaxHealth; }
     public float Mana { get; private set; }
     public float MaxMana
     {
@@ -91,6 +92,7 @@ public sealed class Stats
         }
     }
     public float ManaRegeneration { get => bonusManaRegeneration + baseManaRegeneration; private set { bonusManaRegeneration = value; } }
+    public float ManaPercentage { get => Mana / MaxMana; }
     public float MovementSpeed { get => bonusMovementSpeed + baseMovementSpeed; private set { bonusMovementSpeed = value; } }
     public float AttackSpeed { get => (bonusAttackSpeed + baseAttackSpeed) / MAX_ATTACK_SPEED_VALUE; private set { bonusAttackSpeed = Mathf.Clamp(value, 0, MAX_ATTACK_SPEED_VALUE - baseAttackSpeed); } }
     public float AttackRange { get => baseAttackRange; }

@@ -16,9 +16,6 @@ public sealed class PlayerUnit : Entity
     {
         base.Awake();
 
-        var parent = new GameObject(name);
-        parent.transform.parent = transform.parent;
-        transform.parent = parent.transform;
         selectionCircle = Instantiate(selectionCircle);
         selectionCircle.transform.parent = transform.parent;
         selectionCircleGFX = selectionCircle.GetComponent<Disc>();
