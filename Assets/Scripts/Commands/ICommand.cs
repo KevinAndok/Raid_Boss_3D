@@ -5,6 +5,7 @@ public interface ICommand
 {
     public abstract GameObject WaypointObject { get; set; }
     public virtual bool WaypointBeingDisplayed { get => WaypointObject != null && WaypointObject.activeInHierarchy; }
+    public abstract float? castTime { get; }
     public abstract OrderType Type { get; }
     public abstract bool BeingExecuted { get; set; }
     public abstract Entity Self { get; set; }

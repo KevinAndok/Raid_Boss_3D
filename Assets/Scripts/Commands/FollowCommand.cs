@@ -10,6 +10,8 @@ public sealed class FollowCommand : ICommand
     public OrderType Type => OrderType.movement;
     public GameObject WaypointObject { get; set; }
 
+    public float? castTime => null;
+
     NavMeshAgent agent;
     float followDistance = 1.5f;
 

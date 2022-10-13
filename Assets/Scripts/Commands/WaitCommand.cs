@@ -8,6 +8,8 @@ public class WaitCommand : ICommand
     public OrderType Type => OrderType.none;
     public GameObject WaypointObject { get; set; }
 
+    public float? castTime => null;
+
     public WaitCommand(Entity entity)
     {
         this.Self = entity;

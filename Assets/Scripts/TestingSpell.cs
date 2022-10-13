@@ -2,8 +2,10 @@ using UnityEngine;
 
 public sealed class TestingSpell : ICommand //ID 0
 {
+    const float baseCastTime = 2;
+
     Vector3 position;
-    float time = 2;
+    float time = baseCastTime;
     Spell Spell;
 
     public TestingSpell(Entity self, Spell spell, Vector3 ground)
@@ -21,6 +23,7 @@ public sealed class TestingSpell : ICommand //ID 0
 
     public OrderType Type => OrderType.utility;
     public GameObject WaypointObject { get; set; }
+    public float? castTime => time / baseCastTime;
 
     public void BeginExecute()
     {

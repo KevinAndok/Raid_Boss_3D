@@ -12,6 +12,8 @@ public sealed class MoveCommand : ICommand
     public OrderType Type => OrderType.movement;
     public GameObject WaypointObject { get; set; }
 
+    public float? castTime => null;
+
     public MoveCommand(Entity entity, Vector3 position)
     {
         this.Self = entity;

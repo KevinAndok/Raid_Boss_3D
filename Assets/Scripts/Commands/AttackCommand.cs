@@ -10,6 +10,8 @@ public sealed class AttackCommand : ICommand
     public OrderType Type => OrderType.offensive;
     public GameObject WaypointObject { get; set; }
 
+    public float? castTime => null;
+
     public AttackCommand(Entity self, Entity target)
     {
         this.Self = self;

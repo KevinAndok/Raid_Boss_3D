@@ -43,6 +43,6 @@ public sealed class EntityManager : MonoBehaviour
 
         status.SetHealth(e.stats.HealthPercentage);
         status.SetMana(e.stats.ManaPercentage);
-        //status.SetCast(e.castPercentage); //TODO
+        status.SetCast(e.commands[0].castTime); 
     }
 }
