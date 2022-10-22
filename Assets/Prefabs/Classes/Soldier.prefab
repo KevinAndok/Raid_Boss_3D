@@ -99,26 +99,27 @@ MonoBehaviour:
   animator: {fileID: 3798773382585138618}
   model: {fileID: 3885494617751860760}
   unitCollider: {fileID: 3883116564036177604}
+  statusBar: {fileID: 0}
   stats:
     baseMovementSpeed: 5
-    baseHealth: 0
-    baseHealthRegeneration: 0
-    baseMana: 0
-    baseManaRegeneration: 0
-    baseAttackSpeed: 0
-    baseAttackRange: 0
-    baseAttackDamage: 0
-    baseHitChance: 0
+    baseHealth: 100
+    baseHealthRegeneration: 1
+    baseMana: 100
+    baseManaRegeneration: 1
+    baseAttackSpeed: 20
+    baseAttackRange: 0.5
+    baseAttackDamage: 10
+    baseHitChance: 0.5
     baseCritChance: 0
     baseSpellDamage: 0
-    baseStrength: 0
-    baseAgility: 0
-    baseVitality: 0
-    baseDexerity: 0
-    baseIntelligence: 0
-    baseWisdom: 0
-    basePhysicalArmor: 0
-    baseMagicArmor: 0
+    baseStrength: 10
+    baseAgility: 10
+    baseVitality: 10
+    baseDexerity: 10
+    baseIntelligence: 10
+    baseWisdom: 10
+    basePhysicalArmor: 10
+    baseMagicArmor: 10
     baseBleedResistance: 0
     basePoisonResistance: 0
     baseBurnResistance: 0

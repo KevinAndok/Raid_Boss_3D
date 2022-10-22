@@ -13,7 +13,7 @@ public sealed class Stats
     private const float STRENGTH_PHYSICAL_RESISTANCE_SCALE = 1;
 
     private const float AGILITY_ATTACKSPEED_SCALE = 1;
-    private const float AGILITY_MOVEMENT_SCALE = 1;
+    private const float AGILITY_MOVEMENT_SCALE = 0.1f;
 
     private const float VITALITY_HEALTH_SCALE = 1;
     private const float VITALITY_HEALTHREGEN_SCALE = 1;

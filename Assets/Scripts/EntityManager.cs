@@ -9,7 +9,13 @@ public sealed class EntityManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (var entity in AllEntities) entity.statusBar = Instantiate(StatusBar, entity.transform.parent);
+        var camRotation = Camera.main.transform.rotation.eulerAngles.x;
+
+        foreach (var entity in AllEntities)
+        {
+            entity.statusBar = Instantiate(StatusBar, entity.transform.parent);
+            entity.statusBar.barParent.rotation = Quaternion.Euler(new Vector3(camRotation, 0, 0));
+        }
     }
 
     private void Update()
@@ -39,7 +45,7 @@ public sealed class EntityManager : MonoBehaviour
         status.gameObject.SetActive(true);
 
         status.transform.position = e.transform.position;
-        status.barParent.LookAt(camTrans);
+        //status.barParent.LookAt(camTrans);
 
         status.SetHealth(e.stats.HealthPercentage);
         status.SetMana(e.stats.ManaPercentage);

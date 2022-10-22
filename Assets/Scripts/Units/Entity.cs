@@ -17,7 +17,7 @@ public class Entity : MonoBehaviour
     public Transform model;
     public Collider unitCollider;
     public List<ICommand> commands = new List<ICommand>();
-    public StatusBar statusBar; //TODO: make this into a separate class with health bar, mana bar and cast bar separated as transforms
+    public StatusBar statusBar; 
 
     public Stats stats;
     public Buffs buffs;
