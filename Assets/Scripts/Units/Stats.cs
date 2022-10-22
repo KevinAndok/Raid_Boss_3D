@@ -325,10 +325,10 @@ public sealed class Stats
         Health = Mathf.Clamp(Health - amount, 0, MaxHealth);
         if (Health == 0) OnDeath?.Invoke();
     }
-    public void Heal(float amount) => Health = Mathf.Clamp(baseHealth + amount, 0, MaxHealth);
+    public void Heal(float amount) => Health = Mathf.Clamp(Health + amount, 0, MaxHealth);
     public void RegenerateHealth()
     {
-        if (Self.IsDead)
+        if (!Self.IsDead)
             Heal(HealthRegeneration * Time.fixedDeltaTime);
     }
 

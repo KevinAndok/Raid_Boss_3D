@@ -6,6 +6,8 @@ public enum Team { none, player, boss };
 
 public class Entity : MonoBehaviour
 {
+    public bool DisplayStats = false;
+
     [SerializeField] private int level;
     public int Level { get => level; private set => level = value; }
     public Team team;
@@ -45,12 +47,13 @@ public class Entity : MonoBehaviour
     }
     protected virtual void FixedUpdate()
     {
+        if (DisplayStats) stats.DisplayStats();
+
         WaitIfNoCommand();
 
-        Debug.Log(commands[0].GetType());
+        //Debug.Log(commands[0].GetType());
 
         if (!CheckIfCommandActive()) return;
-
         commands[0].OnFixedFrame();
 
         stats.RegenerateHealth();
