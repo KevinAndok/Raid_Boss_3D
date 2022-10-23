@@ -9,23 +9,23 @@ public sealed class Stats
     private const float MAX_RESISTANCE_VALUE = 100;
     private const float CRIT_DAMAGE_MULTIPLIER = 2;
 
-    private const float STRENGTH_DAMAGE_SCALE = 1;
-    private const float STRENGTH_PHYSICAL_RESISTANCE_SCALE = 1;
+    private const float STRENGTH_DAMAGE_SCALE = 1.5f;               //
+    private const float STRENGTH_PHYSICAL_RESISTANCE_SCALE = .5f;   //
 
-    private const float AGILITY_ATTACKSPEED_SCALE = 1;
-    private const float AGILITY_MOVEMENT_SCALE = 0.1f;
+    private const float AGILITY_ATTACKSPEED_SCALE = .5f;            //
+    private const float AGILITY_MOVEMENT_SCALE = 0.01f;             //
 
-    private const float VITALITY_HEALTH_SCALE = 1;
-    private const float VITALITY_HEALTHREGEN_SCALE = 1;
+    private const float VITALITY_HEALTH_SCALE = 20;                 //
+    private const float VITALITY_HEALTHREGEN_SCALE = .1f;           //
 
-    private const float DEXERITY_CRITICAL_CHANCE_SCALE = .01f;
-    private const float DEXERITY_HITCHANCE_SCALE = 1;
+    private const float DEXERITY_CRITICAL_CHANCE_SCALE = .001f;     //
+    private const float DEXERITY_HITCHANCE_SCALE = .005f;           //
 
-    private const float INTELLIGENCE_MANA_SCALE = 1;
-    private const float INTELLIGENCE_MANAREGEN_SCALE = 1;
+    private const float INTELLIGENCE_MANA_SCALE = 10;               //
+    private const float INTELLIGENCE_MANAREGEN_SCALE = .2f;         //
 
-    private const float WISDOM_SPELLDAMAGE_SCALE = 1;
-    private const float WISDOM_MAGIC_RESISTANCE__SCALE = 1;
+    private const float WISDOM_SPELLDAMAGE_SCALE = 2.5f;            //
+    private const float WISDOM_MAGIC_RESISTANCE__SCALE = .5f;       //
     #endregion
 
     #region Editor Variables
@@ -355,6 +355,7 @@ public sealed class Stats
             $"Intelligence: {Intelligence} \n" +
             $"Wisdom: {Wisdom} \n" +
             $"PhysicalResistance: {PhysicalResistancePercentage} \n" +
+            $"MagicalResistance: {MagicResistancePercentage} \n" +
             $"BleedResistance: {BleedResistance} \n" +
             $"PoisonResistance: {PoisonResistance} \n" +
             $"BurnResistance: {BurnResistance}";

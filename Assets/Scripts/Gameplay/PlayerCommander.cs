@@ -104,6 +104,7 @@ public sealed class PlayerCommander : MonoBehaviour
     {
         var selectedUnit = PlayerController.selectedUnits[0];
         var unitCommands = selectedUnit.commands;
+        if (spellIndex >= selectedUnit.spells.Count) return;
         var spell = selectedUnit.spells[spellIndex];
 
         if (spell.lastCastTime > Time.time + spell.cooldown) return; //spell on cooldown, we cannot cast it
@@ -112,7 +113,7 @@ public sealed class PlayerCommander : MonoBehaviour
             selectedUnit.StopAllCommands();
 
         //todo: start mouse indicator
-        //todo: start cooldown
+        spell.lastCastTime = Time.time;
         unitCommands.Add(selectedUnit.spells[spellIndex].GetCommand(selectedUnit));
     }
 

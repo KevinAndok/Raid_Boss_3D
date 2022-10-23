@@ -1,9 +1,10 @@
-using System;
 using UnityEngine;
 
-[Serializable]
-public sealed class Spell
+[CreateAssetMenu(fileName = "New Spell", menuName = "ScriptableObjects/Spell", order = 1)]
+public sealed class Spell : ScriptableObject
 {
+    //Spells are duplicated in Start for every (player unit) entity so they dont get the same cooldowns
+    //Keep this in mind when creating new variables for spells
     public string spellName;
     public string spellDescription;
     public Sprite spellIcon;

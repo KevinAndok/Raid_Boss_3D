@@ -23,7 +23,21 @@ public sealed class PlayerUnit : Entity
         selectionCircleGFX.Thickness = entitySize / 2;
         selectionCircleTrans = selectionCircle.transform;
     }
-
+    private void Start()
+    {
+        for (int i = 0; i < spells.Count; i++)
+        {
+            spells[i] = new Spell 
+            { 
+                spellName = spells[i].name,
+                spellDescription = spells[i].spellDescription,
+                spellIcon = spells[i].spellIcon,
+                spellID = spells[i].spellID,
+                cooldown = spells[i].cooldown,
+                lastCastTime = 0
+            };
+        }
+    }
     protected override void Update()
     {
         MoveSelectionCircle();
