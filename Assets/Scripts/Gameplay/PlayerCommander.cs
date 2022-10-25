@@ -109,7 +109,7 @@ public sealed class PlayerCommander : MonoBehaviour
 
         if (spell.lastCastTime > Time.time + spell.cooldown) return; //spell on cooldown, we cannot cast it
 
-        if (!CustomInput.shiftDown || unitCommands[0].GetType() == typeof(WaitCommand))
+        if (!CustomInput.ShiftDown || unitCommands[0].GetType() == typeof(WaitCommand))
             selectedUnit.StopAllCommands();
 
         //todo: start mouse indicator
@@ -121,12 +121,12 @@ public sealed class PlayerCommander : MonoBehaviour
     {
         if (PlayerController.selectedUnits.Count == 0) return;
 
-        if (CustomInput.altDown)
+        if (CustomInput.AltDown)
         {
             //all selected
             foreach (Entity e in PlayerController.selectedUnits)
             {
-                if (!CustomInput.shiftDown) e.StopAllCommands();
+                if (!CustomInput.ShiftDown) e.StopAllCommands();
                 IssueCommand(e, command);
             }
         }
@@ -134,7 +134,7 @@ public sealed class PlayerCommander : MonoBehaviour
         {
             //only selected[0]
             var e = PlayerController.selectedUnits[0];
-            if (!CustomInput.shiftDown) e.StopAllCommands();
+            if (!CustomInput.ShiftDown) e.StopAllCommands();
             IssueCommand(e, command);
         }
     }

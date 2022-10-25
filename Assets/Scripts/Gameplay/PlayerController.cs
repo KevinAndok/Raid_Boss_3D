@@ -56,7 +56,7 @@ public sealed class PlayerController : MonoBehaviour
 
     private void ColorCirclesBasedonSelection(PlayerUnit unit)
     {
-        if (!CustomInput.altDown /*|| true*/)
+        if (!CustomInput.AltDown /*|| true*/)
         {
             if (unit == selectedUnits[0])
             {
@@ -89,7 +89,7 @@ public sealed class PlayerController : MonoBehaviour
         if (selectedUnits.Contains(unit)) return;
         unit.selectionCircle.SetActive(true);
         selectedUnits.Add(unit);
-        if (unit == selectedUnits[0] || CustomInput.altDown) unit.DisplayCommands();
+        if (unit == selectedUnits[0] || CustomInput.AltDown) unit.DisplayCommands();
     }
     public void DeselectUnit(PlayerUnit unit)
     {
@@ -100,12 +100,12 @@ public sealed class PlayerController : MonoBehaviour
 
     public void SelectionGroup(int number)
     {
-        if (CustomInput.shiftDown)
+        if (CustomInput.ShiftDown)
         {
             UnitGroups.AddUnitGroup(number, selectedUnits);
             return;
         }
-        if (CustomInput.ctrlDown || CustomInput.altDown)
+        if (CustomInput.CtrlDown || CustomInput.AltDown)
         {
             UnitGroups.SetUnitGroup(number, selectedUnits);
             return;

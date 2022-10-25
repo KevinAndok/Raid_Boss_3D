@@ -1,14 +1,21 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public sealed class CustomInput : MonoBehaviour
 {
+    #region Constants
+    const float SCROLL_OFFSET = .05f;
+    #endregion
+
     #region Events
     public static event Action OnLeftMouseDown;
     public static event Action OnLeftMouseUp;
 
     public static event Action OnRightMouseDown;
     public static event Action OnRightMouseUp;
+
+    public static event Action OnMouseScroll;
 
     public static event Action OnShiftDown;
     public static event Action OnShiftUp;
@@ -48,20 +55,21 @@ public sealed class CustomInput : MonoBehaviour
     #endregion
 
     #region Properties
-    public static bool leftMouseDown { get; private set; }
-    public static bool rightMouseDown { get; private set; }
-    public static bool shiftDown { get; private set; }
-    public static bool ctrlDown { get; private set; }
-    public static bool altDown { get; private set; }
-    public static bool tabDown { get; private set; }
+    public static bool LeftMouseDown { get; private set; }
+    public static bool RightMouseDown { get; private set; }
+    public static bool ShiftDown { get; private set; }
+    public static bool CtrlDown { get; private set; }
+    public static bool AltDown { get; private set; }
+    public static bool TabDown { get; private set; }
+    public static float ScrollValue { get; private set; }
     #endregion
 
     #region Functions
     public void OnMouseLeft()
     {
-        leftMouseDown = !leftMouseDown;
+        LeftMouseDown = !LeftMouseDown;
 
-        switch (leftMouseDown)
+        switch (LeftMouseDown)
         {
             case true:
                 OnLeftMouseDown?.Invoke();
@@ -73,9 +81,9 @@ public sealed class CustomInput : MonoBehaviour
     }
     public void OnMouseRight()
     {
-        rightMouseDown = !rightMouseDown;
+        RightMouseDown = !RightMouseDown;
 
-        switch (rightMouseDown)
+        switch (RightMouseDown)
         {
             case true:
                 OnRightMouseDown?.Invoke();
@@ -87,9 +95,9 @@ public sealed class CustomInput : MonoBehaviour
     }
     public void OnShift()
     {
-        shiftDown = !shiftDown;
+        ShiftDown = !ShiftDown;
 
-        switch (shiftDown)
+        switch (ShiftDown)
         {
             case true:
                 OnShiftDown?.Invoke();
@@ -101,9 +109,9 @@ public sealed class CustomInput : MonoBehaviour
     }
     public void OnCtrl()
     {
-        ctrlDown = !ctrlDown;
+        CtrlDown = !CtrlDown;
 
-        switch (ctrlDown)
+        switch (CtrlDown)
         {
             case true:
                 OnCtrlDown?.Invoke();
@@ -115,9 +123,9 @@ public sealed class CustomInput : MonoBehaviour
     }
     public void OnAlt()
     {
-        altDown = !altDown;
+        AltDown = !AltDown;
 
-        switch (altDown)
+        switch (AltDown)
         {
             case true:
                 OnAltDown?.Invoke();
@@ -129,9 +137,9 @@ public sealed class CustomInput : MonoBehaviour
     }
     public void OnTab()
     {
-        tabDown = !tabDown;
+        TabDown = !TabDown;
 
-        switch (tabDown)
+        switch (TabDown)
         {
             case true:
                 OnTabDown?.Invoke();
@@ -164,5 +172,22 @@ public sealed class CustomInput : MonoBehaviour
     public void OnX() => OnXDown?.Invoke();
     public void OnC() => OnCDown?.Invoke();
     public void OnV() => OnVDown?.Invoke();
+
+    public float GetMouseScroll() => (ScrollValue = -Mouse.current.scroll.ReadValue().y);
+    #endregion
+
+    #region Private Variables
+    float lastScroll = 0;
+    #endregion
+
+    #region UnityEvents
+    private void Update()
+    {
+        if (GetMouseScroll() != 0 && Time.time > lastScroll + SCROLL_OFFSET) OnMouseScroll?.Invoke();
+    }
+    private void Awake()
+    {
+        OnMouseScroll += () => lastScroll = Time.time;
+    }
     #endregion
 }

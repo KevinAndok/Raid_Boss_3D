@@ -44,7 +44,7 @@ public sealed class UnitSelection : MonoBehaviour
     {
         CheckIfPointingAtEntity();
 
-        if (!CustomInput.shiftDown) controller.DeselectAllUnits();
+        if (!CustomInput.ShiftDown) controller.DeselectAllUnits();
 
         if (_isDraggingMouseBox && _dragStartPosition != Input.mousePosition)
         {
