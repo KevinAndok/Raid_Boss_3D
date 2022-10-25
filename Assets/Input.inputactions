@@ -33,6 +33,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "MouseWheel",
+                    "type": "PassThrough",
+                    "id": "7e1177e3-df3f-4cab-a00c-a79e00b86458",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Tab",
                     "type": "PassThrough",
                     "id": "9e96a15d-94ef-46b2-8839-5f4c2783c867",
@@ -844,6 +853,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "V",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fc52def5-f57d-4b6c-bf92-e79836490a99",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse;Touch",
+                    "action": "MouseWheel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9e5c043d-aa2c-458e-847f-fa813995a9cc",
+                    "path": "<VirtualMouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch;Keyboard&Mouse",
+                    "action": "MouseWheel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

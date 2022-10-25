@@ -17,6 +17,9 @@ public sealed class CustomInput : MonoBehaviour
 
     public static event Action OnMouseScroll;
 
+    public static event Action OnMiddleMouseDown;
+    public static event Action OnMiddleMouseUp;
+
     public static event Action OnShiftDown;
     public static event Action OnShiftUp;
 
@@ -57,6 +60,7 @@ public sealed class CustomInput : MonoBehaviour
     #region Properties
     public static bool LeftMouseDown { get; private set; }
     public static bool RightMouseDown { get; private set; }
+    public static bool MiddleMouseDown { get; private set; }
     public static bool ShiftDown { get; private set; }
     public static bool CtrlDown { get; private set; }
     public static bool AltDown { get; private set; }
@@ -90,6 +94,20 @@ public sealed class CustomInput : MonoBehaviour
                 break;
             case false:
                 OnRightMouseUp?.Invoke();
+                break;
+        }
+    }
+    public void OnMouseWheel()
+    {
+        MiddleMouseDown = !MiddleMouseDown;
+
+        switch (MiddleMouseDown)
+        {
+            case true:
+                OnMiddleMouseDown?.Invoke();
+                break;
+            case false:
+                OnMiddleMouseUp?.Invoke();
                 break;
         }
     }
