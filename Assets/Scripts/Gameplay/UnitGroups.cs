@@ -16,13 +16,13 @@ public class UnitGroups : MonoBehaviour
     {
         SelectionGroups[group].Clear();
         SelectionGroups[group].AddRange(units);
-        UIUnitGroups[group].SetGroup(null, SelectionGroups[group].Count);
+        UIUnitGroups[group].SetGroup(units.Count > 0 ? units[0].unitIcon : null, SelectionGroups[group].Count);
     }
     public void AddUnitGroup(int group, List<PlayerUnit> units)
     {
-        foreach (var unit in units) 
-            if (!SelectionGroups[group].Contains(unit)) 
+        foreach (var unit in units)
+            if (!SelectionGroups[group].Contains(unit))
                 SelectionGroups[group].Add(unit);
-        UIUnitGroups[group].SetGroup(null, SelectionGroups[group].Count);
+        UIUnitGroups[group].SetGroup(units.Count > 0 ? units[0].unitIcon : null, SelectionGroups[group].Count);
     }
 }
