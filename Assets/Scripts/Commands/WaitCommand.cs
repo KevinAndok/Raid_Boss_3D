@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class WaitCommand : ICommand
 {
+    const float MAX_IDLE_DURATION = 12f;
+    const float IDLE_DURATION_OFFSET = 3f;
+
+    float lastIdle, idleTimer;
+
     public bool BeingExecuted { get; set; }
     public Entity Self { get; set; }
 
@@ -19,13 +24,21 @@ public class WaitCommand : ICommand
 
     public void BeginExecute()
     {
+        lastIdle = Time.time;
+        idleTimer = Random.value * MAX_IDLE_DURATION;
+
         BeingExecuted = true;
         Self.MoveAnimation(false);
     }
 
     public void OnFixedFrame()
     {
-        if (Random.value < .001f) Self.IdleTwo();
+        if (Time.time > lastIdle + idleTimer + IDLE_DURATION_OFFSET)
+        {
+            lastIdle = Time.time;
+            idleTimer = Random.value * MAX_IDLE_DURATION;
+            Self.IdleTwo();
+        }
 
         //collision
     }
