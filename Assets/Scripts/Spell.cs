@@ -18,8 +18,8 @@ public sealed class Spell : ScriptableObject
         {
             case 0:
                 return new TestingSpell(self, this, PlayerCommander.mouseGroundPoint);
-            //case 1:
-            //    return new TestingSpell(self, PlayerCommander.mouseGroundPoint);
+            case 1:
+                return new AOETerrorize(self, this);
             default:
                 Debug.LogError("spellID not implemented");
                 return null;

@@ -19,7 +19,7 @@ public class Entity : MonoBehaviour
     public Transform model;
     public Collider unitCollider;
     public List<ICommand> commands = new List<ICommand>();
-    public StatusBar statusBar; 
+    public StatusBar statusBar;
 
     public Stats stats;
     public Buffs buffs;
@@ -72,7 +72,7 @@ public class Entity : MonoBehaviour
     {
         if (commands.Count > 0)
         {
-            if (commands[0].WaypointBeingDisplayed) 
+            if (commands[0].WaypointBeingDisplayed)
                 PoolingSystem.GetPoolByName("Waypoint").ObjectPool.Release(commands[0].WaypointObject);
             commands.RemoveAt(0);
         }
@@ -124,6 +124,11 @@ public class Entity : MonoBehaviour
         if (!animator) return;
         animator.SetTrigger("Attack");
     }
+    public void PowerUpAnimation()
+    {
+        if (!animator) return;
+        animator.SetTrigger("PowerUp");
+    }
     public void IdleTwo()
     {
         if (!animator) return;
@@ -137,13 +142,15 @@ public class Entity : MonoBehaviour
     }
     public void StopCurrentCommand()
     {
-        if (commands[0].WaypointBeingDisplayed) 
+        if (commands[0].WaypointBeingDisplayed)
             PoolingSystem.GetPoolByName("Waypoint").ObjectPool.Release(commands[0].WaypointObject);
         commands[0].OnCancel();
     }
     public void StopAllCommands()
     {
         var pool = PoolingSystem.GetPoolByName("Waypoint");
+
+        if (commands.Count == 0) return;
 
         foreach (var command in commands)
         {
