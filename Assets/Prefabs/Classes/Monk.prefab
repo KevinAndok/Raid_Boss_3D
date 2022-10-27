@@ -92,6 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b93d21babfc10d64c8ccba5db3a2b6cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisplayStats: 0
   level: 0
   team: 1
   entitySize: 0.5
@@ -129,7 +130,7 @@ MonoBehaviour:
     FreezeImmune: 0
     TerrorizeImmune: 0
     SilenceImmune: 0
-  unitIcon: {fileID: 0}
+  unitIcon: {fileID: 21300000, guid: 0ed55350991c2d94e92913858f1cbcad, type: 3}
   selectionCircle: {fileID: 374968145410163847, guid: e04aa9adb5305d44ab8c75e63205dcba, type: 3}
   selectionCircleGFX: {fileID: 0}
   selectionCircleTrans: {fileID: 0}

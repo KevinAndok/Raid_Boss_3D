@@ -44,4 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e437fadfdea7e8f499443ccde4938b16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pooledObjects: []
+  pooledObjects:
+  - name: Waypoint
+    prefab: {fileID: 633694121850620466, guid: 5d65357dbc4af974ba0fb3cbaca5ccb8, type: 3}
