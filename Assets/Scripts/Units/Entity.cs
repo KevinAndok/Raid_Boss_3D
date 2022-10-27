@@ -154,8 +154,8 @@ public class Entity : MonoBehaviour
 
         foreach (var command in commands)
         {
-            if (commands[0].WaypointObject && commands[0].WaypointObject.activeInHierarchy)
-                pool.ObjectPool.Release(commands[0].WaypointObject);
+            if (command.WaypointObject && command.WaypointObject.activeInHierarchy)
+                pool.ObjectPool.Release(command.WaypointObject);
             command.OnCancel();
         }
 
