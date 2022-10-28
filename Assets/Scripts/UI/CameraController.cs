@@ -1,17 +1,32 @@
+using System;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
     public float cameraScrollSpeed;
-    public float[] cameraSizes;
+
+    [Header("Zoom Data")]
+    public int countInEachDirection;
+    public float scaleInterval;
+    public float minRotation, maxRotation;
+
+    [Space(10)]
+    public CameraSizeRotationData[] cameraData;
 
     Camera cam;
     bool isDragging = false;
     int currentCameraSizeIndex;
     Vector3 mouseDeltaPosition;
 
+    private void Awake()
+    {
+        if (!TryGetComponent(out cam)) cam = Camera.main;
+
+        cameraData = new CameraSizeRotationData[countInEachDirection * 2 + 1];
+    }
     private void Start()
     {
+        InitializeCameraSizes();
         InitiateCameraResize();
         InitializeCameraDrag();
     }
@@ -20,6 +35,16 @@ public class CameraController : MonoBehaviour
         CameraDragging();
     }
 
+    private void InitializeCameraSizes()
+    {
+        for (int i = 0; i < cameraData.Length; i++)
+        {
+            var diff = i - countInEachDirection;
+
+            cameraData[i].Size = cam.orthographicSize + diff * scaleInterval;
+            cameraData[i].Rotation = Mathf.Clamp(cam.transform.rotation.eulerAngles.x + diff * scaleInterval * 10, minRotation, maxRotation);
+        }
+    }
     private void InitializeCameraDrag()
     {
         CustomInput.OnMiddleMouseDown += () => { isDragging = true; };
@@ -32,22 +57,21 @@ public class CameraController : MonoBehaviour
             var moveVector = Input.mousePosition - mouseDeltaPosition;
             var camPos = cam.transform.position;
 
-            cam.transform.position = Vector3.MoveTowards(camPos, camPos - new Vector3(moveVector.x, 0, moveVector.y), (cameraSizes[currentCameraSizeIndex] / cameraSizes[cameraSizes.Length - 1]) * cameraScrollSpeed);
+            cam.transform.position = Vector3.MoveTowards(camPos, camPos - new Vector3(moveVector.x, 0, moveVector.y), (cameraData[currentCameraSizeIndex].Size / cameraData[cameraData.Length - 1].Size) * cameraScrollSpeed);
         }
 
         mouseDeltaPosition = Input.mousePosition;
     }
     private void InitiateCameraResize()
     {
-        if (!TryGetComponent(out cam)) cam = Camera.main;
         CustomInput.OnMouseScroll += () => ResizeCameraSize();
 
-        if (cameraSizes.Length == 0)
+        if (cameraData.Length == 0)
         {
-            cameraSizes = new float[1];
-            cameraSizes[0] = cam.orthographicSize;
+            cameraData = new CameraSizeRotationData[1];
+            cameraData[0] = new CameraSizeRotationData { Size = cam.orthographicSize, Rotation = cam.transform.rotation.x };
         }
-        currentCameraSizeIndex = Mathf.Max((cameraSizes.Length - 1) / 2, 0);
+        currentCameraSizeIndex = Mathf.Max((cameraData.Length - 1) / 2, 0);
 
         ResizeCameraSize(true);
     }
@@ -55,7 +79,15 @@ public class CameraController : MonoBehaviour
     {
         int val = (int)Mathf.Sign(CustomInput.ScrollValue);
 
-        currentCameraSizeIndex = Mathf.Clamp(currentCameraSizeIndex + (skipInput ? 0 : val), 0, cameraSizes.Length - 1);
-        cam.orthographicSize = cameraSizes[currentCameraSizeIndex];
+        currentCameraSizeIndex = Mathf.Clamp(currentCameraSizeIndex + (skipInput ? 0 : val), 0, cameraData.Length - 1);
+        cam.orthographicSize = cameraData[currentCameraSizeIndex].Size;
+        cam.transform.rotation = Quaternion.Euler(new Vector3(cameraData[currentCameraSizeIndex].Rotation, cam.transform.rotation.eulerAngles.y, cam.transform.rotation.eulerAngles.z));
     }
+}
+
+[Serializable]
+public class CameraSizeRotationData
+{
+    public float Size;
+    public float Rotation;
 }
