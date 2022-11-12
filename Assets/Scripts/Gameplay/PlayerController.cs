@@ -59,7 +59,7 @@ public sealed class PlayerController : MonoBehaviour
 
     private void ColorCirclesBasedonSelection(PlayerUnit unit)
     {
-        if (!CustomInput.AltDown /*|| true*/)
+        if (CustomInput.AltDown /*|| true*/)
         {
             if (unit == selectedUnits[0])
             {

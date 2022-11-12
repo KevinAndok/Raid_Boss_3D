@@ -121,7 +121,7 @@ public sealed class PlayerCommander : MonoBehaviour
     {
         if (PlayerController.selectedUnits.Count == 0) return;
 
-        if (CustomInput.AltDown)
+        if (!CustomInput.AltDown)
         {
             //all selected
             foreach (Entity e in PlayerController.selectedUnits)

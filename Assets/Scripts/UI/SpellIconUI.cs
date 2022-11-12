@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class SpellIconUI : MonoBehaviour
 {
+    //TODO: Set shortcut key by spell
+
     public Image image;
     public TMP_Text cooldown;
     public TMP_Text shortcut;
