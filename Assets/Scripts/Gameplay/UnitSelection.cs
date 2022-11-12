@@ -4,6 +4,7 @@ using UnityEngine;
 public sealed class UnitSelection : MonoBehaviour
 {
     public PlayerController controller;
+    public SpellUI spellUI;
 
     [SerializeField] private LayerMask _unitLayers;
     [SerializeField] private Color _selectionBoxColorInner;
@@ -60,6 +61,7 @@ public sealed class UnitSelection : MonoBehaviour
         }
 
         _isDraggingMouseBox = false;
+        spellUI.SetSpellBar(controller.selectedUnits.Count > 0 ? controller.selectedUnits[0] : null);
     }
 
     void CheckIfPointingAtEntity()

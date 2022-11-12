@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellName: Teleport
   spellDescription: Teleports the user to a point on the map
-  spellIcon: {fileID: 21300000, guid: 2223112387d043140bfaeccb9c72cc23, type: 3}
+  spellIcon: {fileID: 21300000, guid: 3c4913b30d4c61d46b45b19ba1ed0946, type: 3}
   spellID: 0
   cooldown: 2
   lastCastTime: 0

@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public sealed class PlayerController : MonoBehaviour
 {
     public UnitGroups UnitGroups;
     public List<PlayerUnit> selectedUnits = new List<PlayerUnit>();
+
+    public SpellUI spellUI;
 
     public Color selectedColor;
 
@@ -123,5 +126,6 @@ public sealed class PlayerController : MonoBehaviour
         DeselectUnit(unit);
         SelectUnit(unit);
         selectedUnits[0].DisplayCommands();
+        spellUI.SetSpellBar(selectedUnits[0]);
     }
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellName: Terrorize
   spellDescription: Apply Terrorize status to enemies around the character
-  spellIcon: {fileID: 0}
+  spellIcon: {fileID: 21300000, guid: 1fce9b2bbde7498409bc272b520232f7, type: 3}
   spellID: 1
   cooldown: 0
   lastCastTime: 0
